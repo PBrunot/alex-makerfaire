@@ -14,6 +14,16 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage1"
     },
+    "image4": {
+        "data": "hwQUABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAAAAAAAAAAAP//7w9OBAAAAAAA8P/+7v7UBAAAAAAA/+/yT+7/DwAAAAAA/y7/G+0iQv8AAADwLy7v/00iQv8AAADwIi7v1E0iUg8AAADwIi7v1E0iUg8AAADwLy7v/00iQv8AAAAA/y7/G+0iQv8AAAAA/+/yT+7/DwAAAAAA8O/+7v7UBAAAAAAAAP//7w9OBAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Eroe"
+    },
+    "image5": {
+        "data": "hwQQABAAAAAAAO7u7g4AAADuvbu76w4A4N27u7u76wDgvXt3d7vrAN67e3u7u7sOvru7u7u7uw6+u7t3d7u7Dr67e3u7u7sOvru7d3e7uw6+u7u7u7u7Dr67e3d3u7sO4Lt7e3u76wDgu7u3t7vrAADuu7u76w4AAADu7u4OAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Scudo fab"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",
