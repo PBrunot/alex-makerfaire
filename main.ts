@@ -205,9 +205,9 @@ spriteutils.createRenderable(100, function (screen2) {
     if (Inventarioaperto) {
         screen2.fillRect(10, 10, 140, 100, 4)
         screen2.drawRect(10, 10, 140, 100, 14)
-        images.print(screen2, "INVENTARIO", 14, 14, 15)
-        images.print(screen2, Tools_names[selectedIndex], 80, 14, 0)
-        screen2.fillRect(14, 24, 132, 1, 15)
+        screen2.print("INVENTARIO", 14, 14, 15)
+screen2.print(Tools_names[selectedIndex], 80, 14, 0)
+screen2.fillRect(14, 24, 132, 1, 15)
         tool_top = 28
         for (let index = 0; index <= Tools.length - 1; index++) {
             spriteutils.drawTransparentImage(Tools[index], screen2, 14 + index * 20, tool_top)
@@ -242,13 +242,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level5`)
 })
-let tool_top = 0
-let selectedIndex = 0
 let Inventarioaperto = false
 let projectile: Sprite = null
-let Tools_names: string[] = []
-let Tools: Image[] = []
 let mySprite: Sprite = null
+let tool_top = 0
+let selectedIndex = 0
+let Tools: Image[] = []
 let sword2 = img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . b c 
@@ -366,7 +365,7 @@ img`
     . . . . . . . . . . . . . . . . 
     `
 ]
-Tools_names = [
+let Tools_names = [
 "Spada",
 "Scudo Fab",
 "",

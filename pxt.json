@@ -4,7 +4,7 @@
     "dependencies": {
         "device": "*",
         "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.4.1",
-        "arcade-text": "github:pelikhan/arcade-image-text#v0.0.4"
+        "controller": "*"
     },
     "files": [
         "main.blocks",
