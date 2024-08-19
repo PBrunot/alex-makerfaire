@@ -30,13 +30,13 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, l
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
-    pause(500)
+    pause(1000)
 })
 // prova 2
 // a
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     info.changeLifeBy(-2)
-    pause(500)
+    pause(1000)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzionecolpo == 1) {
@@ -487,7 +487,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
-    pause(500)
+    pause(1000)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level2`)
@@ -573,7 +573,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
     scene.cameraFollowSprite(mySprite)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    pause(500)
+    sprites.destroy(otherSprite)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`Castello`)
@@ -601,7 +601,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, func
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
-    pause(500)
+    pause(1000)
 })
 let Inventarioaperto = false
 let projectile: Sprite = null
