@@ -32,8 +32,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, o
     info.changeLifeBy(-3)
     pause(500)
 })
-// prova 2
-// a
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     info.changeLifeBy(-2)
     pause(500)
@@ -607,10 +605,10 @@ let Inventarioaperto = false
 let projectile: Sprite = null
 let direzionecolpo = 0
 let mySprite: Sprite = null
-let tool_top = 0
-let selectedIndex = 0
-let Tools_names: string[] = []
 let Tools: Image[] = []
+let Tools_names: string[] = []
+let selectedIndex = 0
+let tool_top = 0
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
     bbbbb6b66666666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbb66666666bbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbdddbbdbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddd
