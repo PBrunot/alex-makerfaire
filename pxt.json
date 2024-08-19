@@ -1,9 +1,10 @@
 {
-    "name": "Il Mio GIoco",
+    "name": "Invasion - Copy",
     "description": "",
     "dependencies": {
         "device": "*",
         "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.4.1",
+        "arcade-text": "github:pelikhan/arcade-image-text#v0.0.4",
         "controller": "*"
     },
     "files": [
@@ -14,13 +15,14 @@
         "tilemap.g.jres",
         "tilemap.g.ts",
         "images.g.jres",
-        "images.g.ts"
+        "images.g.ts",
+        "custom.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.12.53",
+        "target": "1.12.56",
         "targetId": "arcade"
     },
     "supportedTargets": [
