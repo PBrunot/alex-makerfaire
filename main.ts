@@ -3,6 +3,7 @@ namespace SpriteKind {
     export const Guardia_Portale = SpriteKind.create()
     export const Boss_finale = SpriteKind.create()
     export const blocco = SpriteKind.create()
+    export const Villaggero = SpriteKind.create()
 }
 /**
  * Attacchi
@@ -495,6 +496,12 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Villaggero, function (sprite, otherSprite) {
+    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 5000, false)
+    pause(3000)
+    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione in cui vada il colpo", 5000, false)
+    pause(100)
+})
 function closeinventory () {
     Inventarioaperto = false
     controller.moveSprite(mySprite)
@@ -516,6 +523,37 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprit
     info.changeLifeBy(-3)
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+    mySprite.setPosition(36 * 16, 14 * 16)
+    Sferafuoco = sprites.create(assets.image`sferapernemico`, SpriteKind.blocco)
+    Sferafuoco.setPosition(21 * 16, 4 * 16)
+    Nemico = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico.follow(Sferafuoco, 50)
+    tiles.placeOnRandomTile(Nemico, assets.tile`Spawner nemici normali`)
+    pause(4000)
+    Nemico2 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico2.follow(Sferafuoco, 20)
+    tiles.placeOnRandomTile(Nemico2, assets.tile`Spawner nemici normali`)
+    pause(4000)
+    direzionecolpo = 0
+    Nemico3 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico3.follow(Sferafuoco, 20)
+    tiles.placeOnRandomTile(Nemico3, assets.tile`Spawner nemici normali`)
+    pause(4000)
+    Nemico4 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico4.follow(Sferafuoco, 20)
+    tiles.placeOnRandomTile(Nemico4, assets.tile`Spawner nemici normali`)
+    pause(4000)
+    Nemico5 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico5.follow(Sferafuoco, 20)
+    tiles.placeOnRandomTile(Nemico5, assets.tile`Spawner nemici normali`)
+    pause(4000)
+    Nemico6 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
+    Nemico6.follow(Sferafuoco, 20)
+    tiles.placeOnRandomTile(Nemico6, assets.tile`Spawner nemici normali`)
+    pause(4000)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`level2`)
@@ -632,9 +670,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
+let Nemico6: Sprite = null
+let Nemico5: Sprite = null
+let Nemico4: Sprite = null
+let Nemico3: Sprite = null
+let Nemico2: Sprite = null
+let Nemico: Sprite = null
+let Sferafuoco: Sprite = null
 let Inventarioaperto = false
 let projectile: Sprite = null
 let direzionecolpo = 0
+let Narratore: Sprite = null
 let mySprite: Sprite = null
 let tool_top = 0
 let selectedIndex = 0
@@ -848,6 +894,7 @@ let sword2 = img`
     . d b b . . . . . . . . . . . . 
     . d d . . . . . . . . . . . . . 
     `
+tiles.setCurrentTilemap(tilemap`casa iniziale`)
 mySprite = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f f 2 2 f f f . . . . 
@@ -866,12 +913,14 @@ mySprite = sprites.create(img`
     . . . . f f f f f f f f . . . . 
     . . . . f f . . . f f f . . . . 
     `, SpriteKind.Player)
-tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
 // scene.setBackgroundImage()
 // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
 scene.cameraFollowSprite(mySprite)
-mySprite.setPosition(36 * 16, 13 * 16)
+mySprite.setPosition(3 * 16, 3 * 16)
+controller.moveSprite(mySprite, 100, 100)
 info.setLife(10)
+Narratore = sprites.create(assets.image`narratore`, SpriteKind.Villaggero)
+Narratore.setPosition(8 * 16, 18 * 16)
 Tools = [
 img`
     . . . . . . . . . . . . . . . . 
@@ -954,31 +1003,3 @@ Tools_names = [
 "",
 ""
 ]
-controller.moveSprite(mySprite, 100, 100)
-let Sferafuoco = sprites.create(assets.image`sferapernemico`, SpriteKind.blocco)
-Sferafuoco.setPosition(21 * 16, 4 * 16)
-let Nemico = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico.follow(Sferafuoco, 50)
-tiles.placeOnRandomTile(Nemico, assets.tile`Spawner nemici normali`)
-pause(4000)
-let Nemico2 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico2.follow(Sferafuoco, 20)
-tiles.placeOnRandomTile(Nemico2, assets.tile`Spawner nemici normali`)
-pause(4000)
-direzionecolpo = 0
-let Nemico3 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico3.follow(Sferafuoco, 20)
-tiles.placeOnRandomTile(Nemico3, assets.tile`Spawner nemici normali`)
-pause(4000)
-let Nemico4 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico4.follow(Sferafuoco, 20)
-tiles.placeOnRandomTile(Nemico4, assets.tile`Spawner nemici normali`)
-pause(4000)
-let Nemico5 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico5.follow(Sferafuoco, 20)
-tiles.placeOnRandomTile(Nemico5, assets.tile`Spawner nemici normali`)
-pause(4000)
-let Nemico6 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-Nemico6.follow(Sferafuoco, 20)
-tiles.placeOnRandomTile(Nemico6, assets.tile`Spawner nemici normali`)
-pause(4000)
