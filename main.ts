@@ -6,9 +6,6 @@ namespace SpriteKind {
     export const Villaggero = SpriteKind.create()
 }
 /**
- * Attacchi
- */
-/**
  * Inventario
  */
 /**
@@ -468,8 +465,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         false
         )
         pause(500)
-    } else {
-    	
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Villaggero, function (sprite, otherSprite) {
@@ -570,8 +565,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
 })
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
     Nemici.removeAt(Nemici.indexOf(sprite))
-    if (Nemici.length == 0) {
+    if (Nemici.length == 0 && zone1_spawn_cpt == 6) {
+        effects.blizzard.startScreenEffect(2000)
         tiles.setCurrentTilemap(tilemap`Villaggio`)
+        z1_ripulita = true
     }
 })
 function cambiaZona (zona: number) {
@@ -668,22 +665,27 @@ function cambiaZona (zona: number) {
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
+    music.play(music.melodyPlayable(music.spooky), music.PlaybackMode.InBackground)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     cambiaZona(5)
 })
+/**
+ * Attacchi
+ */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
-let zone1_spawn_cpt = 0
 let Sferafuoco: Sprite = null
+let zone1_spawn_cpt = 0
 let zona_corrente = 0
 let Inventarioaperto = false
 let Narratore: Sprite = null
 let projectile: Sprite = null
 let direzionecolpo = 0
+let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let tool_top = 0
@@ -1000,6 +1002,7 @@ Tools_names = [
 ""
 ]
 Nemici = []
+z1_ripulita = false
 cambiaZona(0)
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
