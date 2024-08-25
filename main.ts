@@ -4,6 +4,27 @@ namespace SpriteKind {
     export const Boss_finale = SpriteKind.create()
     export const blocco = SpriteKind.create()
 }
+/**
+ * Attacchi
+ */
+/**
+ * Inventario
+ */
+/**
+ * Combattimento
+ */
+/**
+ * Villaggio
+ */
+/**
+ * Game Over
+ */
+/**
+ * Cambio mondo
+ */
+/**
+ * Attacchi
+ */
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     tiles.setCurrentTilemap(tilemap`Bossfight portale`)
     mySprite = sprites.create(img`
@@ -30,6 +51,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, l
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSprite) {
@@ -40,6 +62,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSp
 // a
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     info.changeLifeBy(-2)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -491,6 +514,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
@@ -605,6 +629,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, func
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
 let Inventarioaperto = false
