@@ -576,10 +576,18 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`casa iniziale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`letto 1`)
         mySprite.y += 32
-        Narratore = sprites.create(assets.image`narratore`, SpriteKind.Villaggero)
-        Narratore.setPosition(8 * 16, 18 * 16)
+        if (z1_ripulita == true) {
+            sprites.destroy(Narratore)
+        } else {
+            Narratore = sprites.create(assets.image`narratore`, SpriteKind.Villaggero)
+            Narratore.setPosition(8 * 16, 18 * 16)
+        }
     } else if (zona == 1) {
-        tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+        if (z1_ripulita == true) {
+            tiles.setCurrentTilemap(tilemap`Villaggio`)
+        } else {
+            tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+        }
         tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
         mySprite.y += 16
         Sferafuoco = sprites.create(assets.image`sferapernemico`, SpriteKind.blocco)
@@ -590,71 +598,17 @@ function cambiaZona (zona: number) {
         mySprite.y = 32 * 16
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`level2`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
     } else if (zona == 4) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
-        mySprite = sprites.create(img`
-            . . . . . . f f f f . . . . . . 
-            . . . . f f f 2 2 f f f . . . . 
-            . . . f f f 2 2 2 2 f f f . . . 
-            . . f f f e e e e e e f f f . . 
-            . . f e e 2 2 2 2 2 2 e f f . . 
-            . f f e 2 f f f f f f 2 e f f . 
-            . f f f f f e e e e f f f f f . 
-            . . f e f b f 4 4 f b f e f . . 
-            . . f e 4 1 f d d f 1 4 e f . . 
-            . . e f f f f d d d 4 e f . . . 
-            . . f d d d d f 2 2 2 f e f . . 
-            . . f b b b b f 2 2 2 f 4 e . . 
-            . . f b b b b f 2 2 2 f . . . . 
-            . . . f c c f 5 5 4 4 f . . . . 
-            . . . . f f f f f f f f . . . . 
-            . . . . f f . . . f f f . . . . 
-            `, SpriteKind.Player)
+        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
     } else if (zona == 5) {
         tiles.setCurrentTilemap(tilemap`Castello`)
-        mySprite = sprites.create(img`
-            . . . . . . f f f f . . . . . . 
-            . . . . f f f 2 2 f f f . . . . 
-            . . . f f f 2 2 2 2 f f f . . . 
-            . . f f f e e e e e e f f f . . 
-            . . f e e 2 2 2 2 2 2 e f f . . 
-            . f f e 2 f f f f f f 2 e f f . 
-            . f f f f f e e e e f f f f f . 
-            . . f e f b f 4 4 f b f e f . . 
-            . . f e 4 1 f d d f 1 4 e f . . 
-            . . e f f f f d d d 4 e f . . . 
-            . . f d d d d f 2 2 2 f e f . . 
-            . . f b b b b f 2 2 2 f 4 e . . 
-            . . f b b b b f 2 2 2 f . . . . 
-            . . . f c c f 5 5 4 4 f . . . . 
-            . . . . f f f f f f f f . . . . 
-            . . . . f f . . . f f f . . . . 
-            `, SpriteKind.Player)
+        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
     } else if (zona == 6) {
         tiles.setCurrentTilemap(tilemap`Città`)
-        mySprite = sprites.create(img`
-            . . . . . . f f f f . . . . . . 
-            . . . . f f f 2 2 f f f . . . . 
-            . . . f f f 2 2 2 2 f f f . . . 
-            . . f f f e e e e e e f f f . . 
-            . . f e e 2 2 2 2 2 2 e f f . . 
-            . f f e 2 f f f f f f 2 e f f . 
-            . f f f f f e e e e f f f f f . 
-            . . f e f b f 4 4 f b f e f . . 
-            . . f e 4 1 f d d f 1 4 e f . . 
-            . . e f f f f d d d 4 e f . . . 
-            . . f d d d d f 2 2 2 f e f . . 
-            . . f b b b b f 2 2 2 f 4 e . . 
-            . . f b b b b f 2 2 2 f . . . . 
-            . . . f c c f 5 5 4 4 f . . . . 
-            . . . . f f f f f f f f . . . . 
-            . . . . f f . . . f f f . . . . 
-            `, SpriteKind.Player)
         mySprite.x = 19
         mySprite.y = 36
-        controller.moveSprite(mySprite)
-        // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
-        scene.cameraFollowSprite(mySprite)
     }
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -665,7 +619,7 @@ function cambiaZona (zona: number) {
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
-    music.play(music.melodyPlayable(music.spooky), music.PlaybackMode.InBackground)
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     cambiaZona(5)
