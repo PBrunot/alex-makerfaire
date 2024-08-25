@@ -21,34 +21,10 @@ namespace SpriteKind {
  * Game Over
  */
 /**
- * Cambio mondo
- */
-/**
  * Attacchi
  */
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`Bossfight portale`)
-    mySprite = sprites.create(img`
-        . . . . . . f f f f . . . . . . 
-        . . . . f f f 2 2 f f f . . . . 
-        . . . f f f 2 2 2 2 f f f . . . 
-        . . f f f e e e e e e f f f . . 
-        . . f e e 2 2 2 2 2 2 e f f . . 
-        . f f e 2 f f f f f f 2 e f f . 
-        . f f f f f e e e e f f f f f . 
-        . . f e f b f 4 4 f b f e f . . 
-        . . f e 4 1 f d d f 1 4 e f . . 
-        . . e f f f f d d d 4 e f . . . 
-        . . f d d d d f 2 2 2 f e f . . 
-        . . f b b b b f 2 2 2 f 4 e . . 
-        . . f b b b b f 2 2 2 f . . . . 
-        . . . f c c f 5 5 4 4 f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f . . . f f f . . . . 
-        `, SpriteKind.Player)
-    controller.moveSprite(mySprite)
-    // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
-    scene.cameraFollowSprite(mySprite)
+    cambiaZona(4)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
@@ -524,47 +500,24 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprit
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
+/**
+ * Cambio mondo
+ */
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
-    mySprite.setPosition(36 * 16, 14 * 16)
-    Sferafuoco = sprites.create(assets.image`sferapernemico`, SpriteKind.blocco)
-    Sferafuoco.setPosition(21 * 16, 4 * 16)
-    Nemico = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico.follow(Sferafuoco, 50)
-    tiles.placeOnRandomTile(Nemico, assets.tile`Spawner nemici normali`)
-    pause(4000)
-    Nemico2 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico2.follow(Sferafuoco, 20)
-    tiles.placeOnRandomTile(Nemico2, assets.tile`Spawner nemici normali`)
-    pause(4000)
-    direzionecolpo = 0
-    Nemico3 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico3.follow(Sferafuoco, 20)
-    tiles.placeOnRandomTile(Nemico3, assets.tile`Spawner nemici normali`)
-    pause(4000)
-    Nemico4 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico4.follow(Sferafuoco, 20)
-    tiles.placeOnRandomTile(Nemico4, assets.tile`Spawner nemici normali`)
-    pause(4000)
-    Nemico5 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico5.follow(Sferafuoco, 20)
-    tiles.placeOnRandomTile(Nemico5, assets.tile`Spawner nemici normali`)
-    pause(4000)
-    Nemico6 = sprites.create(assets.image`Nemico base`, SpriteKind.Enemy)
-    Nemico6.follow(Sferafuoco, 20)
-    tiles.placeOnRandomTile(Nemico6, assets.tile`Spawner nemici normali`)
-    pause(4000)
+    if (zona_corrente == 0) {
+        cambiaZona(1)
+    } else if (zona_corrente == 1) {
+        cambiaZona(0)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`level2`)
+    cambiaZona(3)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 4
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`Villaggio`)
-    mySprite.x = 32 * 16
-    mySprite.y = 32 * 16
+    cambiaZona(2)
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inventarioaperto) {
@@ -613,74 +566,125 @@ screen2.fillRect(14, 24, 132, 1, 15)
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`Città`)
-    mySprite = sprites.create(img`
-        . . . . . . f f f f . . . . . . 
-        . . . . f f f 2 2 f f f . . . . 
-        . . . f f f 2 2 2 2 f f f . . . 
-        . . f f f e e e e e e f f f . . 
-        . . f e e 2 2 2 2 2 2 e f f . . 
-        . f f e 2 f f f f f f 2 e f f . 
-        . f f f f f e e e e f f f f f . 
-        . . f e f b f 4 4 f b f e f . . 
-        . . f e 4 1 f d d f 1 4 e f . . 
-        . . e f f f f d d d 4 e f . . . 
-        . . f d d d d f 2 2 2 f e f . . 
-        . . f b b b b f 2 2 2 f 4 e . . 
-        . . f b b b b f 2 2 2 f . . . . 
-        . . . f c c f 5 5 4 4 f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f . . . f f f . . . . 
-        `, SpriteKind.Player)
-    mySprite.x = 19
-    mySprite.y = 36
-    controller.moveSprite(mySprite)
+    cambiaZona(6)
+})
+sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
+    Nemici.removeAt(Nemici.indexOf(sprite))
+    if (Nemici.length == 0) {
+        tiles.setCurrentTilemap(tilemap`Villaggio`)
+    }
+})
+function cambiaZona (zona: number) {
+    if (zona == 0) {
+        tiles.setCurrentTilemap(tilemap`casa iniziale`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`letto 1`)
+        mySprite.y += 32
+        Narratore = sprites.create(assets.image`narratore`, SpriteKind.Villaggero)
+        Narratore.setPosition(8 * 16, 18 * 16)
+    } else if (zona == 1) {
+        tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
+        mySprite.y += 16
+        Sferafuoco = sprites.create(assets.image`sferapernemico`, SpriteKind.blocco)
+        Sferafuoco.setPosition(21 * 16, 5 * 16)
+    } else if (zona == 2) {
+        tiles.setCurrentTilemap(tilemap`Villaggio`)
+        mySprite.x = 32 * 16
+        mySprite.y = 32 * 16
+    } else if (zona == 3) {
+        tiles.setCurrentTilemap(tilemap`level2`)
+    } else if (zona == 4) {
+        tiles.setCurrentTilemap(tilemap`Bossfight portale`)
+        mySprite = sprites.create(img`
+            . . . . . . f f f f . . . . . . 
+            . . . . f f f 2 2 f f f . . . . 
+            . . . f f f 2 2 2 2 f f f . . . 
+            . . f f f e e e e e e f f f . . 
+            . . f e e 2 2 2 2 2 2 e f f . . 
+            . f f e 2 f f f f f f 2 e f f . 
+            . f f f f f e e e e f f f f f . 
+            . . f e f b f 4 4 f b f e f . . 
+            . . f e 4 1 f d d f 1 4 e f . . 
+            . . e f f f f d d d 4 e f . . . 
+            . . f d d d d f 2 2 2 f e f . . 
+            . . f b b b b f 2 2 2 f 4 e . . 
+            . . f b b b b f 2 2 2 f . . . . 
+            . . . f c c f 5 5 4 4 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . f f . . . f f f . . . . 
+            `, SpriteKind.Player)
+    } else if (zona == 5) {
+        tiles.setCurrentTilemap(tilemap`Castello`)
+        mySprite = sprites.create(img`
+            . . . . . . f f f f . . . . . . 
+            . . . . f f f 2 2 f f f . . . . 
+            . . . f f f 2 2 2 2 f f f . . . 
+            . . f f f e e e e e e f f f . . 
+            . . f e e 2 2 2 2 2 2 e f f . . 
+            . f f e 2 f f f f f f 2 e f f . 
+            . f f f f f e e e e f f f f f . 
+            . . f e f b f 4 4 f b f e f . . 
+            . . f e 4 1 f d d f 1 4 e f . . 
+            . . e f f f f d d d 4 e f . . . 
+            . . f d d d d f 2 2 2 f e f . . 
+            . . f b b b b f 2 2 2 f 4 e . . 
+            . . f b b b b f 2 2 2 f . . . . 
+            . . . f c c f 5 5 4 4 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . f f . . . f f f . . . . 
+            `, SpriteKind.Player)
+    } else if (zona == 6) {
+        tiles.setCurrentTilemap(tilemap`Città`)
+        mySprite = sprites.create(img`
+            . . . . . . f f f f . . . . . . 
+            . . . . f f f 2 2 f f f . . . . 
+            . . . f f f 2 2 2 2 f f f . . . 
+            . . f f f e e e e e e f f f . . 
+            . . f e e 2 2 2 2 2 2 e f f . . 
+            . f f e 2 f f f f f f 2 e f f . 
+            . f f f f f e e e e f f f f f . 
+            . . f e f b f 4 4 f b f e f . . 
+            . . f e 4 1 f d d f 1 4 e f . . 
+            . . e f f f f d d d 4 e f . . . 
+            . . f d d d d f 2 2 2 f e f . . 
+            . . f b b b b f 2 2 2 f 4 e . . 
+            . . f b b b b f 2 2 2 f . . . . 
+            . . . f c c f 5 5 4 4 f . . . . 
+            . . . . f f f f f f f f . . . . 
+            . . . . f f . . . f f f . . . . 
+            `, SpriteKind.Player)
+        mySprite.x = 19
+        mySprite.y = 36
+        controller.moveSprite(mySprite)
+        // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
+        scene.cameraFollowSprite(mySprite)
+    }
+    // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
     scene.cameraFollowSprite(mySprite)
-})
+    controller.moveSprite(mySprite, 100, 100)
+    zona_corrente = zona
+    direzionecolpo = 0
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    sprites.destroy(otherSprite)
+    sprites.destroy(otherSprite, effects.trail, 500)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`Castello`)
-    mySprite = sprites.create(img`
-        . . . . . . f f f f . . . . . . 
-        . . . . f f f 2 2 f f f . . . . 
-        . . . f f f 2 2 2 2 f f f . . . 
-        . . f f f e e e e e e f f f . . 
-        . . f e e 2 2 2 2 2 2 e f f . . 
-        . f f e 2 f f f f f f 2 e f f . 
-        . f f f f f e e e e f f f f f . 
-        . . f e f b f 4 4 f b f e f . . 
-        . . f e 4 1 f d d f 1 4 e f . . 
-        . . e f f f f d d d 4 e f . . . 
-        . . f d d d d f 2 2 2 f e f . . 
-        . . f b b b b f 2 2 2 f 4 e . . 
-        . . f b b b b f 2 2 2 f . . . . 
-        . . . f c c f 5 5 4 4 f . . . . 
-        . . . . f f f f f f f f . . . . 
-        . . . . f f . . . f f f . . . . 
-        `, SpriteKind.Player)
-    controller.moveSprite(mySprite)
-    // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
-    scene.cameraFollowSprite(mySprite)
+    cambiaZona(5)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
-let Nemico6: Sprite = null
-let Nemico5: Sprite = null
-let Nemico4: Sprite = null
-let Nemico3: Sprite = null
-let Nemico2: Sprite = null
-let Nemico: Sprite = null
+let zone1_spawn_cpt = 0
 let Sferafuoco: Sprite = null
+let zona_corrente = 0
 let Inventarioaperto = false
+let Narratore: Sprite = null
 let projectile: Sprite = null
 let direzionecolpo = 0
-let Narratore: Sprite = null
+let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let tool_top = 0
 let selectedIndex = 0
@@ -894,7 +898,6 @@ let sword2 = img`
     . d b b . . . . . . . . . . . . 
     . d d . . . . . . . . . . . . . 
     `
-tiles.setCurrentTilemap(tilemap`casa iniziale`)
 mySprite = sprites.create(img`
     . . . . . . f f f f . . . . . . 
     . . . . f f f 2 2 f f f . . . . 
@@ -913,14 +916,7 @@ mySprite = sprites.create(img`
     . . . . f f f f f f f f . . . . 
     . . . . f f . . . f f f . . . . 
     `, SpriteKind.Player)
-// scene.setBackgroundImage()
-// spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
-scene.cameraFollowSprite(mySprite)
-mySprite.setPosition(3 * 16, 3 * 16)
-controller.moveSprite(mySprite, 100, 100)
 info.setLife(10)
-Narratore = sprites.create(assets.image`narratore`, SpriteKind.Villaggero)
-Narratore.setPosition(8 * 16, 18 * 16)
 Tools = [
 img`
     . . . . . . . . . . . . . . . . 
@@ -1003,3 +999,13 @@ Tools_names = [
 "",
 ""
 ]
+Nemici = []
+cambiaZona(0)
+game.onUpdateInterval(4000, function () {
+    if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
+        Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
+        Nemici[0].follow(Sferafuoco, 20)
+        tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
+        zone1_spawn_cpt += 1
+    }
+})
