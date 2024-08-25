@@ -79,8 +79,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, ot
     pause(5000)
     Narratore_2.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 5000, true)
     pause(5000)
-    Narratore_2.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 5000, true)
-    pause(5000)
+    Narratore_2.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 6000, true)
+    pause(6000)
     Narratore_2.sayText("il cristallo di ghiaccio, custodito al castello,", 5000, true)
     pause(5000)
     Narratore_2.sayText("e, infine, il cristallo dei fulmini, che i mostri hanno già rubato", 5000, true)
@@ -89,7 +89,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, ot
     pause(5000)
     Narratore_2.sayText("Prendi il cristallo di fuoco, e usa i suoi poteri per uscire di qui!", 5000, true)
     pause(5000)
-    sprites.destroy(Narratore_2, effects.blizzard, 500)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzionecolpo == 1) {
@@ -534,10 +534,11 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sp
  * Narratore
  */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
-    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 5000, false)
-    pause(3000)
-    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 5000, false)
-    pause(100)
+    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 5000, true)
+    pause(5000)
+    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 5000, true)
+    pause(5000)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 function openinventory () {
     Inventarioaperto = true
@@ -1039,7 +1040,11 @@ cambiaZona(0)
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
-        Nemici[0].follow(Sferafuoco, 20)
+        if (randint(0, 10) < 6) {
+            Nemici[0].follow(Sferafuoco, 20)
+        } else {
+            Nemici[0].follow(mySprite, 20)
+        }
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
         zone1_spawn_cpt += 1
     }
