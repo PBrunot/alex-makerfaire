@@ -7,19 +7,22 @@ namespace SpriteKind {
     export const Narratore2 = SpriteKind.create()
     export const Cristallofuoco = SpriteKind.create()
     export const Attacco_sfera_fuoco = SpriteKind.create()
+    export const CristalloGhiaccio = SpriteKind.create()
+    export const Narratore_3 = SpriteKind.create()
+    export const Attacco_sfera_ghiaccio = SpriteKind.create()
 }
-/**
- * Cambi ZONA
- */
-/**
- * Attacchi
- */
-/**
- * NEMICI
- */
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_3, function (sprite, otherSprite) {
+    otherSprite.sayText("Attento! Il mostro sta scappando con il cristallo!", 4000, true)
+    pause(5000)
+    otherSprite.sayText("Usa il fuoco per fargli del danno, è il suo punto debole!", 6000, true)
+    pause(5000)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
+})
+// NEMICI
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
-    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
+    music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.InBackground)
     pause(1000)
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sprite, location) {
@@ -35,26 +38,35 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSp
     game.setGameOverMessage(false, "Il cristallo è stato rubato!")
     game.gameOver(false)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
+    tiles.setTileAt(tiles.getTileLocation(25, 3), sprites.dungeon.floorLight2)
+    Narratore_3 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
+    Narratore_3.setPosition(24 * 16, 2 * 16)
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (fuoco) {
-        if (direzionecolpo == 1) {
-            Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, 100, 0)
-            pause(1000)
-            sprites.destroy(Attaccofuoco)
-        } else if (direzionecolpo == 2) {
-            Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, -100, 0)
-            pause(1000)
-            sprites.destroy(Attaccofuoco)
-        } else if (direzionecolpo == 4) {
-            Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, 0, 100)
-            pause(500)
-            sprites.destroy(Attaccofuoco)
-        } else if (direzionecolpo == 3) {
-            Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, 0, -100)
-            pause(500)
-            sprites.destroy(Attaccofuoco)
-        }
-        pause(500)
+    if (direzionecolpo == 1) {
+        vy = 100
+        vy = 0
+    } else if (direzionecolpo == 2) {
+        vx = -100
+        vy = 0
+    } else if (direzionecolpo == 4) {
+        vx = 0
+        vy = 100
+    } else if (direzionecolpo == 3) {
+        vx = 0
+        vy = -100
+    }
+    if (ghiaccio) {
+        AttaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, mySprite, vx, vy)
+        pause(1000)
+        sprites.destroy(AttaccoGhiaccio)
+        pause(1000)
+    } else if (fuoco) {
+        Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, vx, vy)
+        pause(1000)
+        sprites.destroy(Attaccofuoco)
+        pause(1000)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
@@ -66,19 +78,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (spr
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, otherSprite) {
     Sferadaprendere = sprites.create(assets.image`sferadaprendere`, SpriteKind.Cristallofuoco)
     Sferadaprendere.setPosition(21 * 16, 5 * 16)
-    Narratore_2.sayText("Grazie mille per aver protetto il villaggio!", 5000, true)
+    otherSprite.sayText("Grazie mille per aver protetto il villaggio!", 5000, true)
     pause(5000)
-    Narratore_2.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 6000, true)
+    otherSprite.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 6000, true)
     pause(5000)
-    Narratore_2.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 7000, true)
+    otherSprite.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 7000, true)
     pause(6000)
-    Narratore_2.sayText("il cristallo di ghiaccio, custodito al castello,", 5000, true)
+    otherSprite.sayText("il cristallo di ghiaccio, custodito al castello,", 5000, true)
     pause(5000)
-    Narratore_2.sayText("e, infine, il cristallo dei fulmini, che i mostri hanno già rubato", 5500, true)
+    otherSprite.sayText("e, infine, il cristallo dei fulmini, che i mostri hanno già rubato", 5500, true)
     pause(5000)
-    Narratore_2.sayText("Le tue sole forze non basteranno per contrastare l'invasione", 5000, true)
+    otherSprite.sayText("Le tue sole forze non basteranno per contrastare l'invasione", 5000, true)
     pause(5000)
-    Narratore_2.sayText("Prendi il cristallo di fuoco, e usa i suoi poteri per uscire di qui!", 5500, true)
+    otherSprite.sayText("Prendi il cristallo di fuoco, e usa i suoi poteri per uscire di qui!", 5500, true)
     pause(5000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
@@ -524,9 +536,7 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sp
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`, function (sprite, location) {
     cambiaZona(4)
 })
-/**
- * Narratore
- */
+// Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
     Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
     pause(7000)
@@ -562,6 +572,13 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 4
 })
+// Combattimento
+sprites.onOverlap(SpriteKind.Player, SpriteKind.CristalloGhiaccio, function (sprite, otherSprite) {
+    ghiaccio = true
+    Tools[3] = assets.image`Attacco di ghiaccio`
+    Tools_names[3] = "Cristallo ghiaccio"
+    sprites.destroy(otherSprite)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
     cambiaZona(2)
 })
@@ -576,9 +593,6 @@ info.onLifeZero(function () {
     game.setGameOverMessage(false, "GAME OVER!")
     game.gameOver(false)
 })
-/**
- * Inventario
- */
 // Inventario
 spriteutils.createRenderable(100, function (screen2) {
     if (Inventarioaperto) {
@@ -615,6 +629,14 @@ screen2.fillRect(14, 24, 132, 1, 15)
             `, screen2, 14 + selectedIndex * 20 - 2, tool_top - 2)
     }
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
+    if (sprite == Attaccofuoco) {
+        sprites.destroy(otherSprite, effects.trail, 500)
+        music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+    } else {
+        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     cambiaZona(6)
 })
@@ -629,15 +651,12 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
             Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 16)
             info.changeLifeBy(3)
         } else if (zona_corrente == 5 && zona5_spawn_cpt == 8) {
-            mySprite.sayText("Una porta si è aperta in questa area!", 2000, true)
-            tiles.setTileAt(tiles.getTileLocation(25, 3), sprites.dungeon.floorLight2)
+            mySprite.sayText("Una porta si è aperta in questa area!", 5000, true)
+            tiles.setTileAt(tiles.getTileLocation(25, 3), assets.tile`Portaaperta`)
             tiles.setWallAt(tiles.getTileLocation(25, 3), false)
         }
     }
 })
-/**
- * Ritorno in mappa villaggio, togliere il ghiaccio
- */
 // Cambio Zona
 function cambiaZona (zona: number) {
     if (zona == 0) {
@@ -714,7 +733,13 @@ function cambiaZona (zona: number) {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
     fuoco = true
     tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
-    Tools_names[0] = 0
+    Tools[2] = assets.image`Attacco di fuoco`
+    Tools_names[2] = "Cristallo fuoco"
+})
+sprites.onDestroyed(SpriteKind.Nemico_potenziato, function (sprite) {
+    Sferadaprendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
+    Sferadaprendere.x = sprite.x
+    Sferadaprendere.y = sprite.y
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
@@ -729,25 +754,45 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
+/**
+ * Inizio gioco
+ */
+/**
+ * Cambi ZONA
+ */
+/**
+ * Attacchi
+ */
+/**
+ * Inventario
+ */
+/**
+ * Ritorno in mappa villaggio, togliere il ghiaccio
+ */
 let Sferafuoco: Sprite = null
+let Narratore_2: Sprite = null
 let zona5_spawn_cpt = 0
 let zone1_spawn_cpt = 0
 let zona_corrente = 0
 let Narratore: Sprite = null
 let Inventarioaperto = false
 let projectile: Sprite = null
-let Narratore_2: Sprite = null
 let Sferadaprendere: Sprite = null
+let AttaccoGhiaccio: Sprite = null
+let ghiaccio = false
+let vx = 0
+let vy = 0
+let Narratore_3: Sprite = null
 let direzionecolpo = 0
 let Attaccofuoco: Sprite = null
 let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let fuoco = false
-let tool_top = 0
-let selectedIndex = 0
-let Tools_names: string[] = []
 let Tools: Image[] = []
+let Tools_names: string[] = []
+let selectedIndex = 0
+let tool_top = 0
 fuoco = false
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
@@ -1049,12 +1094,7 @@ Nemici = []
 z1_ripulita = false
 mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
 cambiaZona(0)
-/**
- * Inizio gioco
- */
-/**
- * Game over
- */
+// Game over
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
