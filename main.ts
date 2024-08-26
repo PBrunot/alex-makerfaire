@@ -23,9 +23,6 @@ namespace SpriteKind {
 /**
  * NEMICI
  */
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
-    cambiaZona(4)
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
@@ -77,17 +74,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, ot
     Sferadaprendere.setPosition(21 * 16, 5 * 16)
     Narratore_2.sayText("Grazie mille per aver protetto il villaggio!", 5000, true)
     pause(5000)
-    Narratore_2.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 5000, true)
+    Narratore_2.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 6000, true)
     pause(5000)
-    Narratore_2.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 6000, true)
+    Narratore_2.sayText("I cristalli sono 3: il cristallo di fuoco, quello che abbiamo protetto oggi,", 7000, true)
     pause(6000)
     Narratore_2.sayText("il cristallo di ghiaccio, custodito al castello,", 5000, true)
     pause(5000)
-    Narratore_2.sayText("e, infine, il cristallo dei fulmini, che i mostri hanno già rubato", 5000, true)
+    Narratore_2.sayText("e, infine, il cristallo dei fulmini, che i mostri hanno già rubato", 5500, true)
     pause(5000)
-    Narratore_2.sayText("Le tue sole forze non basteranno per contrastarli", 5000, true)
+    Narratore_2.sayText("Le tue sole forze non basteranno per contrastare l'invasione", 5000, true)
     pause(5000)
-    Narratore_2.sayText("Prendi il cristallo di fuoco, e usa i suoi poteri per uscire di qui!", 5000, true)
+    Narratore_2.sayText("Prendi il cristallo di fuoco, e usa i suoi poteri per uscire di qui!", 5500, true)
     pause(5000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
@@ -530,14 +527,17 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sp
         tiles.setTileAt(location, sprites.castle.tilePath5)
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`, function (sprite, location) {
+    cambiaZona(4)
+})
 /**
  * Narratore
  */
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
-    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 5000, true)
-    pause(5000)
-    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 5000, true)
-    pause(5000)
+    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
+    pause(7000)
+    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 7000, true)
+    pause(7000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 function openinventory () {
@@ -626,12 +626,19 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
 })
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
     Nemici.removeAt(Nemici.indexOf(sprite))
-    if (Nemici.length == 0 && zone1_spawn_cpt == 6) {
-        effects.blizzard.startScreenEffect(2000)
-        tiles.setCurrentTilemap(tilemap`Villaggio`)
-        z1_ripulita = true
-        Narratore_2 = sprites.create(assets.image`narratore`, SpriteKind.Narratore2)
-        Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 16)
+    if (Nemici.length == 0) {
+        if (zona_corrente == 1 && zone1_spawn_cpt == 6) {
+            effects.blizzard.startScreenEffect(2000)
+            tiles.setCurrentTilemap(tilemap`Villaggio`)
+            z1_ripulita = true
+            Narratore_2 = sprites.create(assets.image`narratore`, SpriteKind.Narratore2)
+            Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 16)
+            info.changeLifeBy(3)
+        } else if (zona_corrente == 5 && zona5_spawn_cpt == 8) {
+            mySprite.sayText("Una porta si è aperta in questa area!")
+            tiles.setTileAt(tiles.getTileLocation(25, 3), sprites.dungeon.floorLight2)
+            tiles.setWallAt(tiles.getTileLocation(25, 3), false)
+        }
     }
 })
 /**
@@ -683,17 +690,20 @@ function cambiaZona (zona: number) {
         tiles.setTileAt(tiles.getTileLocation(38, 29), sprites.castle.tilePath5)
         tiles.setTileAt(tiles.getTileLocation(39, 28), sprites.castle.tilePath5)
         tiles.setTileAt(tiles.getTileLocation(39, 29), assets.tile`tel mappa centrale`)
+        if (fuoco == true) {
+            tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
+        }
     } else if (zona == 3) {
-        tiles.setCurrentTilemap(tilemap`level2`)
-        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
+        tiles.setCurrentTilemap(tilemap`Mappa generale`)
         sprites.destroy(Narratore)
         mySprite.setPosition(13 * 16, 17 * 16)
     } else if (zona == 4) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
-        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
     } else if (zona == 5) {
         tiles.setCurrentTilemap(tilemap`Castello`)
-        tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`tel mappa centrale`)
+        mySprite.y += -32
     } else if (zona == 6) {
         tiles.setCurrentTilemap(tilemap`Città`)
         mySprite.x = 19
@@ -709,6 +719,7 @@ function cambiaZona (zona: number) {
 // Combattimento
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
     fuoco = true
+    tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
@@ -724,6 +735,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     pause(1000)
 })
 let Sferafuoco: Sprite = null
+let zona5_spawn_cpt = 0
 let zone1_spawn_cpt = 0
 let zona_corrente = 0
 let Narratore: Sprite = null
@@ -932,6 +944,7 @@ scene.setBackgroundImage(img`
     `)
 music.play(music.createSong(assets.song`Invasion_music`), music.PlaybackMode.InBackground)
 pause(5000)
+scene.setBackgroundImage(assets.image`Inizio`)
 let sword2 = img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . b c 
@@ -951,23 +964,26 @@ let sword2 = img`
     . d d . . . . . . . . . . . . . 
     `
 mySprite = sprites.create(img`
-    . . . . . . f f f f . . . . . . 
-    . . . . f f f 2 2 f f f . . . . 
-    . . . f f f 2 2 2 2 f f f . . . 
-    . . f f f e e e e e e f f f . . 
-    . . f e e 2 2 2 2 2 2 e f f . . 
-    . f f e 2 f f f f f f 2 e f f . 
-    . f f f f f e e e e f f f f f . 
-    . . f e f b f 4 4 f b f e f . . 
-    . . f e 4 1 f d d f 1 4 e f . . 
-    . . e f f f f d d d 4 e f . . . 
-    . . f d d d d f 2 2 2 f e f . . 
-    . . f b b b b f 2 2 2 f 4 e . . 
-    . . f b b b b f 2 2 2 f . . . . 
-    . . . f c c f 5 5 4 4 f . . . . 
-    . . . . f f f f f f f f . . . . 
-    . . . . f f . . . f f f . . . . 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
+    f f f f f f f f f f f f f f f f 
     `, SpriteKind.Player)
+mySprite.sayText("... Cos'è questa puzza di fumo?", 4000, true)
+pause(4000)
+sprites.destroy(mySprite)
 info.setLife(10)
 Tools = [
 img`
@@ -1036,6 +1052,7 @@ Tools_names = [
 ]
 Nemici = []
 z1_ripulita = false
+mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
 cambiaZona(0)
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
@@ -1047,5 +1064,10 @@ game.onUpdateInterval(4000, function () {
         }
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
         zone1_spawn_cpt += 1
+    } else if (zona_corrente == 5 && zona5_spawn_cpt < 8) {
+        Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
+        Nemici[0].follow(mySprite, 20)
+        tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
+        zona5_spawn_cpt += 1
     }
 })
