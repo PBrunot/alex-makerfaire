@@ -562,6 +562,9 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sp
     }
     sprites.destroy(sprite)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`, function (sprite, location) {
+    cambiaZona(4)
+})
 // Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
     Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
@@ -569,13 +572,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, ot
     Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 7000, true)
     pause(7000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Teletrasporto per morte`, function (sprite, location) {
-    if (zona_corrente == 4) {
-        cambiaZona(3)
-    } else {
-        cambiaZona(4)
-    }
 })
 function openinventory () {
     Inventarioaperto = true
@@ -587,23 +583,16 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 1
     selectedIndex = Math.min(selectedIndex + 1, Tools.length - 1)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Teletrasporto_bossfight`, function (sprite, location) {
-    if (zona_corrente == 7) {
-        cambiaZona(3)
-    } else {
-        cambiaZona(7)
-    }
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
-    pause(2000)
+    pause(1000)
 })
 // Cambio mondo
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite, location) {
     if (zona_corrente == 0) {
         cambiaZona(1)
-    } else if (zona_corrente == 1 || zona_corrente == 2) {
+    } else if (zona_corrente == 1) {
         cambiaZona(0)
     }
 })
@@ -631,10 +620,6 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 info.onLifeZero(function () {
-    if (zona_corrente == 4) {
-        tiles.setCurrentTilemap(tilemap`Mappa generale`)
-        mySprite.setPosition(32 * 16, 32 * 16)
-    }
     game.setGameOverMessage(false, "GAME OVER!")
     game.gameOver(false)
 })
@@ -673,17 +658,6 @@ screen2.fillRect(14, 24, 162, 1, 15)
             1.11.11.11.11.11.11.
             `, screen2, 14 + selectedIndex * 20 - 2, tool_top - 2)
     }
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
-    if (sprite == AttaccoGhiaccio) {
-        if (randint(1, 6) >= 3) {
-            sprites.destroy(otherSprite, effects.disintegrate, 500)
-            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
-        }
-    } else {
-        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
-    }
-    sprites.destroy(sprite)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     if (sprite == Attaccofuoco) {
@@ -775,14 +749,9 @@ function cambiaZona (zona: number) {
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         sprites.destroy(Narratore)
-        if (zona_corrente == 7) {
-            tiles.placeOnRandomTile(mySprite, assets.tile`Teletrasporto_bossfight`)
-        } else {
-            tiles.placeOnRandomTile(mySprite, assets.tile`myTile2`)
-        }
-        mySprite.y += 32
+        mySprite.setPosition(13 * 16, 17 * 16)
     } else if (zona == 4) {
-        tiles.setCurrentTilemap(tilemap`Tilemap per morte`)
+        tiles.setCurrentTilemap(tilemap`Bossfight portale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
     } else if (zona == 5) {
         tiles.setCurrentTilemap(tilemap`Castello`)
@@ -792,9 +761,6 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Città`)
         mySprite.x = 19
         mySprite.y = 36
-    } else if (zona == 7) {
-        tiles.setCurrentTilemap(tilemap`Bossfight portale`)
-        tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
     }
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -802,7 +768,6 @@ function cambiaZona (zona: number) {
     controller.moveSprite(mySprite, 100, 100)
     zona_corrente = zona
     direzionecolpo = 0
-    Nemici = []
 }
 // Combattimento
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
@@ -830,13 +795,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
-<<<<<<< local changes
-
-
-let zona7_spawn_cpt = 0
-let zona4_spawn_cpt = 0
-=======
->>>>>>> remote changes (pulled from Github)
 let Sferafuoco: Sprite = null
 let Narratore_2: Sprite = null
 let zona5_spawn_cpt = 0
@@ -847,6 +805,7 @@ let Inventarioaperto = false
 let projectile: Sprite = null
 let Sferadaprendere: Sprite = null
 let AttaccoGhiaccio: Sprite = null
+let ghiaccio = false
 let vy = 0
 let vx = 0
 let VitaNemicoPotenziato = 0
@@ -858,14 +817,12 @@ let Attaccofuoco: Sprite = null
 let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
-let ghiaccio = false
 let fuoco = false
-let Tools: Image[] = []
-let Tools_names: string[] = []
-let selectedIndex = 0
 let tool_top = 0
+let selectedIndex = 0
+let Tools_names: string[] = []
+let Tools: Image[] = []
 fuoco = false
-ghiaccio = true
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
     bbbbb6b66666666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbb66666666bbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbdddbbdbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddd
@@ -1061,6 +1018,24 @@ pause(5000)
 pauseUntil(() => controller.A.isPressed())
 sprites.destroy(makerfaire)
 scene.setBackgroundImage(assets.image`Inizio`)
+let sword2 = img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . b c 
+    . . . . . . . . . . . . . b e . 
+    . . . . . . . . . d d . b e . . 
+    . . . . . . . . . . d b b . . . 
+    . . . . . . . . . . d b b . . . 
+    . . . . . . . . . d b b . b . . 
+    . . . . . . . . d e b . . b . . 
+    . . . . . . . d e b . . . . . . 
+    . . . . . . d e b . . . . . . . 
+    . . . . . d e b . . . . . . . . 
+    . . . . d e b . . . . . . . . . 
+    . . . d e b . . . . . . . . . . 
+    . . d e b . . . . . . . . . . . 
+    . d b b . . . . . . . . . . . . 
+    . d d . . . . . . . . . . . . . 
+    `
 mySprite = sprites.create(img`
     f f f f f f f f f f f f f f f f 
     f f f f f f f f f f f f f f f f 
@@ -1082,24 +1057,6 @@ mySprite = sprites.create(img`
 mySprite.sayText("... Cos'è questa puzza di fumo?", 4000, true)
 pause(4000)
 sprites.destroy(mySprite)
-let sword2 = img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . b c 
-    . . . . . . . . . . . . . b e . 
-    . . . . . . . . . d d . b e . . 
-    . . . . . . . . . . d b b . . . 
-    . . . . . . . . . . d b b . . . 
-    . . . . . . . . . d b b . b . . 
-    . . . . . . . . d e b . . b . . 
-    . . . . . . . d e b . . . . . . 
-    . . . . . . d e b . . . . . . . 
-    . . . . . d e b . . . . . . . . 
-    . . . . d e b . . . . . . . . . 
-    . . . d e b . . . . . . . . . . 
-    . . d e b . . . . . . . . . . . 
-    . d b b . . . . . . . . . . . . 
-    . d d . . . . . . . . . . . . . 
-    `
 info.setLife(10)
 Tools = [
 img`
@@ -1186,15 +1143,5 @@ game.onUpdateInterval(4000, function () {
         Nemici[0].follow(mySprite, 20)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
         zona5_spawn_cpt += 1
-    } else if (zona_corrente == 4 && zona4_spawn_cpt < 6) {
-        Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
-        tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawn guardie portale`)
-        Nemici[0].follow(mySprite, 60)
-        zona4_spawn_cpt += 1
-    } else if (zona_corrente == 7 && zona7_spawn_cpt < 6) {
-        Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
-        tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawn guardie portale`)
-        Nemici[0].follow(mySprite, 40)
-        zona7_spawn_cpt += 1
     }
 })
