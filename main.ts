@@ -33,6 +33,7 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sp
     if (sprite == Attaccofuoco) {
         tiles.setTileAt(location, assets.tile`tel mappa centrale`)
     }
+    sprites.destroy(sprite)
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 3
@@ -72,7 +73,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzionecolpo == 1) {
-        vy = 100
+        vx = 100
         vy = 0
     } else if (direzionecolpo == 2) {
         vx = -100
@@ -559,6 +560,7 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sp
     if (sprite == Attaccofuoco) {
         tiles.setTileAt(location, sprites.castle.tilePath5)
     }
+    sprites.destroy(sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`, function (sprite, location) {
     cambiaZona(4)
@@ -666,6 +668,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function 
     } else {
         music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
     }
+    sprites.destroy(sprite)
 })
 // Game Over
 sprites.onOverlap(SpriteKind.Nemico_potenziato, SpriteKind.blocco, function (sprite, otherSprite) {
@@ -779,6 +782,7 @@ sprites.onDestroyed(SpriteKind.Nemico_potenziato, function (sprite) {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
     music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+    sprites.destroy(sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     cambiaZona(5)
@@ -815,8 +819,8 @@ let projectile: Sprite = null
 let Sferadaprendere: Sprite = null
 let AttaccoGhiaccio: Sprite = null
 let ghiaccio = false
-let vx = 0
 let vy = 0
+let vx = 0
 let VitaNemicoPotenziato = 0
 let Uscita: Sprite = null
 let Nemico_potenziato_: Sprite = null
