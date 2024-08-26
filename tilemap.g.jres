@@ -352,6 +352,12 @@
         "tilemapTile": true,
         "displayName": "Portaaperta"
     },
+    "tile59": {
+        "data": "hwQQABAAAADd3e0e7h7uHt3d7R4REe4e3d3eHu4e7h7d3e7d3R7uHt3d7R7uHe4e3d0REe4dERHd3e0e7h7uHt3d3h7uHu4e3d3tHe4e7R7d3d3eERHdHt3d3d3uHt4e3d3d3d3d3u7d3d3d3d3d3d3d3d3d3d3t3d3d3d3d3d3d3d3d3d3d3Q==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "muro distrutto"
+    },
     "level1": {
         "id": "level1",
         "mimeType": "application/mkcd-tilemap",

@@ -13,7 +13,7 @@ namespace SpriteKind {
 }
 scene.onHitWall(SpriteKind.Nemico_potenziato, function (sprite, location) {
     tiles.setWallAt(location, false)
-    tiles.setTileAt(location, sprites.dungeon.floorLight2)
+    tiles.setTileAt(location, assets.tile`muro distrutto`)
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_3, function (sprite, otherSprite) {
@@ -45,8 +45,8 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSp
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
-    Narratore_3 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
-    Narratore_3.setPosition(24 * 16, 2 * 16)
+    Narratore_32 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
+    Narratore_32.setPosition(24 * 16, 2 * 16)
     Nemico_potenziato_ = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
     Nemico_potenziato_.setPosition(21 * 16, 4 * 16)
     Uscita = sprites.create(img`
@@ -578,6 +578,7 @@ function openinventory () {
     controller.moveSprite(mySprite, 0, 0)
     selectedIndex = 0
 }
+// Attacchi
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 1
     selectedIndex = Math.min(selectedIndex + 1, Tools.length - 1)
@@ -664,6 +665,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function 
         if (VitaNemicoPotenziato <= 0) {
             sprites.destroy(otherSprite, effects.ashes, 500)
             music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+            sprites.destroy(Narratore_32)
         }
     } else {
         music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
@@ -794,19 +796,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     pause(1000)
 })
 /**
- * Inizio gioco
+ * Inventario
  */
 /**
  * Cambi ZONA
  */
 /**
- * Attacchi
- */
-/**
- * Inventario
- */
-/**
- * Ritorno in mappa villaggio, togliere il ghiaccio
+ * Inizio gioco
  */
 let Sferafuoco: Sprite = null
 let Narratore_2: Sprite = null
@@ -824,17 +820,17 @@ let vx = 0
 let VitaNemicoPotenziato = 0
 let Uscita: Sprite = null
 let Nemico_potenziato_: Sprite = null
-let Narratore_3: Sprite = null
+let Narratore_32: Sprite = null
 let direzionecolpo = 0
 let Attaccofuoco: Sprite = null
 let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let fuoco = false
-let Tools: Image[] = []
-let Tools_names: string[] = []
-let selectedIndex = 0
 let tool_top = 0
+let selectedIndex = 0
+let Tools_names: string[] = []
+let Tools: Image[] = []
 fuoco = false
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
