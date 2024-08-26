@@ -11,6 +11,10 @@ namespace SpriteKind {
     export const Narratore_3 = SpriteKind.create()
     export const Attacco_sfera_ghiaccio = SpriteKind.create()
 }
+scene.onHitWall(SpriteKind.Nemico_potenziato, function (sprite, location) {
+    tiles.setWallAt(location, false)
+    tiles.setTileAt(location, sprites.dungeon.floorLight2)
+})
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_3, function (sprite, otherSprite) {
     otherSprite.sayText("Attento! Il mostro sta scappando con il cristallo!", 4000, true)
@@ -39,9 +43,32 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSp
     game.gameOver(false)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
-    tiles.setTileAt(tiles.getTileLocation(25, 3), sprites.dungeon.floorLight2)
+    tiles.setTileAt(location, sprites.dungeon.floorLight2)
     Narratore_3 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
     Narratore_3.setPosition(24 * 16, 2 * 16)
+    Nemico_potenziato_ = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
+    Nemico_potenziato_.setPosition(21 * 16, 4 * 16)
+    Uscita = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.blocco)
+    Uscita.setPosition(20 * 16, 37 * 16)
+    Nemico_potenziato_.follow(Uscita, 20)
+    VitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzionecolpo == 1) {
@@ -631,11 +658,19 @@ screen2.fillRect(14, 24, 132, 1, 15)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     if (sprite == Attaccofuoco) {
-        sprites.destroy(otherSprite, effects.trail, 500)
-        music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+        VitaNemicoPotenziato += -1
+        if (VitaNemicoPotenziato <= 0) {
+            sprites.destroy(otherSprite, effects.ashes, 500)
+            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+        }
     } else {
         music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
     }
+})
+// Game Over
+sprites.onOverlap(SpriteKind.Nemico_potenziato, SpriteKind.blocco, function (sprite, otherSprite) {
+    game.setGameOverMessage(false, "Il cristallo è stato rubato!")
+    game.gameOver(false)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     cambiaZona(6)
@@ -782,6 +817,9 @@ let AttaccoGhiaccio: Sprite = null
 let ghiaccio = false
 let vx = 0
 let vy = 0
+let VitaNemicoPotenziato = 0
+let Uscita: Sprite = null
+let Nemico_potenziato_: Sprite = null
 let Narratore_3: Sprite = null
 let direzionecolpo = 0
 let Attaccofuoco: Sprite = null
