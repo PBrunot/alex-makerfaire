@@ -73,17 +73,17 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzionecolpo == 1) {
-        vx = 100
+        vx = 110
         vy = 0
     } else if (direzionecolpo == 2) {
-        vx = -100
+        vx = -110
         vy = 0
     } else if (direzionecolpo == 4) {
         vx = 0
-        vy = 100
+        vy = 110
     } else if (direzionecolpo == 3) {
         vx = 0
-        vy = -100
+        vy = -110
     }
     if (ghiaccio) {
         AttaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, mySprite, vx, vy)
@@ -626,11 +626,11 @@ info.onLifeZero(function () {
 // Inventario
 spriteutils.createRenderable(100, function (screen2) {
     if (Inventarioaperto) {
-        screen2.fillRect(10, 10, 140, 100, 4)
-        screen2.drawRect(10, 10, 140, 100, 14)
+        screen2.fillRect(10, 10, 170, 100, 4)
+        screen2.drawRect(10, 10, 170, 100, 14)
         screen2.print("INVENTARIO", 14, 14, 15)
 screen2.print(Tools_names[selectedIndex], 80, 14, 0)
-screen2.fillRect(14, 24, 132, 1, 15)
+screen2.fillRect(14, 24, 162, 1, 15)
         tool_top = 28
         for (let index = 0; index <= Tools.length - 1; index++) {
             spriteutils.drawTransparentImage(Tools[index], screen2, 14 + index * 20, tool_top)
@@ -795,15 +795,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
-/**
- * Inventario
- */
-/**
- * Cambi ZONA
- */
-/**
- * Inizio gioco
- */
 let Sferafuoco: Sprite = null
 let Narratore_2: Sprite = null
 let zona5_spawn_cpt = 0
@@ -1020,9 +1011,12 @@ scene.setBackgroundImage(img`
     bbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccbbbbbbbbbbcccbbbbbbbbbbccccbbbbbbbccccbbbbcccbbbbbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccc
     bbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccc
     `)
-let makerfaire = assets.image`makerFaire`
+let makerfaire = sprites.create(assets.image`makerFaire`, SpriteKind.blocco)
+makerfaire.setPosition(170, 120)
 music.play(music.createSong(assets.song`Invasion_music`), music.PlaybackMode.InBackground)
 pause(5000)
+pauseUntil(() => controller.A.isPressed())
+sprites.destroy(makerfaire)
 scene.setBackgroundImage(assets.image`Inizio`)
 let sword2 = img`
     . . . . . . . . . . . . . . . . 
