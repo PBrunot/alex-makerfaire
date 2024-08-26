@@ -12,12 +12,6 @@ namespace SpriteKind {
  * Cambi ZONA
  */
 /**
- * Inizio gioco
- */
-/**
- * Game over
- */
-/**
  * Attacchi
  */
 /**
@@ -635,7 +629,7 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
             Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 16)
             info.changeLifeBy(3)
         } else if (zona_corrente == 5 && zona5_spawn_cpt == 8) {
-            mySprite.sayText("Una porta si è aperta in questa area!")
+            mySprite.sayText("Una porta si è aperta in questa area!", 2000, true)
             tiles.setTileAt(tiles.getTileLocation(25, 3), sprites.dungeon.floorLight2)
             tiles.setWallAt(tiles.getTileLocation(25, 3), false)
         }
@@ -720,6 +714,7 @@ function cambiaZona (zona: number) {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
     fuoco = true
     tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
+    Tools_names[0] = 0
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
@@ -1054,6 +1049,12 @@ Nemici = []
 z1_ripulita = false
 mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
 cambiaZona(0)
+/**
+ * Inizio gioco
+ */
+/**
+ * Game over
+ */
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
