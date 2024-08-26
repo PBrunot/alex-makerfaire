@@ -827,10 +827,10 @@ let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let fuoco = false
-let tool_top = 0
-let selectedIndex = 0
-let Tools_names: string[] = []
 let Tools: Image[] = []
+let Tools_names: string[] = []
+let selectedIndex = 0
+let tool_top = 0
 fuoco = false
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
@@ -1020,6 +1020,7 @@ scene.setBackgroundImage(img`
     bbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccbbbbbbbbbbcccbbbbbbbbbbccccbbbbbbbccccbbbbcccbbbbbbbbbbbbbbbbbbbbbbbccbbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccc
     bbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccccccc
     `)
+let makerfaire = assets.image`makerFaire`
 music.play(music.createSong(assets.song`Invasion_music`), music.PlaybackMode.InBackground)
 pause(5000)
 scene.setBackgroundImage(assets.image`Inizio`)
