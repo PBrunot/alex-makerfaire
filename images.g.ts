@@ -1352,6 +1352,25 @@ bbbbbbccb3bbbcccccccccfcccffcbbbbbbbbbbbbccbb3333bbcccbb333b3333cccbbbcb333333bb
 bbbbbbbbb3bbbcccccccfffffffcbbbbbbbbbbbbb3cbbb3b3bccbbb3333bbbbbcbbbcbb3bb3bbbccbbbbbbb3333fceb333333333fcccccc3333ecb3343434334433eccb333cccce3333131113131bfccb3131333ccccccb3333333333333bccc3cbbbb33333ccb3bbccccccccccccccccfffffffcccccccccccccccccccccccc
 bbbbbbbbbbbccccccccccccfccbbbbbbbbbbbbbbbbbbb333bbbbbbb333b333bbccbbbbbbbbbbccbbbbbbbcbbb3bcbc3333333333cccccccb333cce3333333333333cccb331bccccb333331133131ceccb3333333bcccbb33333333333333bccb33333333333ccbbbbbcccccccccccccccccffffccccccccccccccccccccccccc
 `;
+            case "9,*:8f":
+            case "tutto_nero":return img`
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+`;
         }
         return null;
     })

@@ -887,24 +887,7 @@ pauseUntil(() => controller.A.isPressed())
 mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
 Nemici = []
 scene.setBackgroundImage(assets.image`Inizio`)
-let mySprite2 = sprites.create(img`
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    f f f f f f f f f f f f f f f f 
-    `, SpriteKind.Player)
+let mySprite2 = sprites.create(assets.image`tutto_nero`, SpriteKind.Player)
 mySprite2.sayText("... Cos'è questa puzza di fumo?", 4000, true)
 pause(4000)
 sprites.destroy(mySprite2)
