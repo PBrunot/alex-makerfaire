@@ -12,6 +12,9 @@ namespace SpriteKind {
     export const Attacco_sfera_ghiaccio = SpriteKind.create()
     export const Narratore_4 = SpriteKind.create()
     export const Narratore_5 = SpriteKind.create()
+    export const Personaggio1 = SpriteKind.create()
+    export const Personaggio2 = SpriteKind.create()
+    export const Regina = SpriteKind.create()
 }
 scene.onHitWall(SpriteKind.Nemico_potenziato, function (sprite, location) {
     tiles.setWallAt(location, false)
@@ -31,15 +34,50 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, o
     music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.InBackground)
     pause(1000)
 })
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherSprite) {
+    if (progressoCittà == 2) {
+        if (true) {
+            otherSprite.sayText("Risolvi l'enigma", 7000, true)
+        } else {
+            otherSprite.sayText("Ecco a te la bacchetta", 7000, true)
+            progressoCittà += 1
+        }
+    } else {
+        otherSprite.sayText("Sparisci della mia vista, plebeo!", 5000, true)
+    }
+})
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sprite, location) {
     if (sprite == Attaccofuoco) {
         tiles.setTileAt(location, assets.tile`tel mappa centrale`)
     }
     sprites.destroy(sprite)
 })
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio1, function (sprite, otherSprite) {
+    if (progressoCittà == 0) {
+        if (true) {
+            otherSprite.sayText("Portami una banana!", 2000, true)
+        } else {
+            otherSprite.sayText("Grazie per la banana!", 2000, true)
+            progressoCittà += 1
+        }
+    } else {
+        otherSprite.sayText("Gnam", 1000, true)
+    }
+})
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 3
 })
+function spriteCittà () {
+    PersonaggioCittà1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
+    tiles.placeOnRandomTile(PersonaggioCittà1, assets.tile`spawnPersonaggio`)
+    PersonaggioCittà2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
+    tiles.placeOnRandomTile(PersonaggioCittà2, assets.tile`spawnPersonaggio`)
+    PersonaggioCittà2.y += -16
+    ReginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
+    tiles.placeOnRandomTile(ReginaCittà, assets.tile`spawnPersonaggio`)
+}
 // Game Over
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSprite) {
     game.setGameOverMessage(false, "Il cristallo è stato rubato!")
@@ -80,6 +118,19 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         pause(1000)
         sprites.destroy(Attaccofuoco)
         pause(1000)
+    }
+})
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite, otherSprite) {
+    if (progressoCittà == 1) {
+        if (true) {
+            otherSprite.sayText("Sei amico della mia scimmia... forse puoi aiutarmi ... ", 7000, true)
+        } else {
+            otherSprite.sayText("Missione compiuta", 5000, true)
+            progressoCittà += 1
+        }
+    } else {
+        otherSprite.sayText("Dov'è la mia scimmia?...", 2000, true)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
@@ -749,6 +800,7 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
 function cambiaZona (zona: number) {
     sprites.destroy(mySprite)
     sprites.destroy(Narratore)
+    sprites.destroy(Narratore_2)
     mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -786,8 +838,6 @@ function cambiaZona (zona: number) {
         }
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
-        sprites.destroy(Narratore)
-        sprites.destroy(Narratore_2)
         if (zona_corrente == 7) {
             tiles.placeOnRandomTile(mySprite, assets.tile`Blocco teletrasporto portale`)
         } else {
@@ -807,6 +857,7 @@ function cambiaZona (zona: number) {
         scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.BothDirections, scroller.BackgroundLayer.Layer0)
         mySprite.x = 144
         mySprite.y = 336
+        spriteCittà()
     } else if (zona == 7) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
@@ -865,8 +916,12 @@ let VitaNemicoPotenziato = 0
 let Uscita: Sprite = null
 let Nemico_potenziato_: Sprite = null
 let Narratore_3_: Sprite = null
+let ReginaCittà: Sprite = null
+let PersonaggioCittà2: Sprite = null
+let PersonaggioCittà1: Sprite = null
 let direzionecolpo = 0
 let Attaccofuoco: Sprite = null
+let progressoCittà = 0
 let z1_ripulita = false
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
@@ -962,6 +1017,7 @@ Tools_names = [
 ]
 Nemici = []
 z1_ripulita = false
+progressoCittà = 0
 cambiaZona(0)
 game.onUpdateInterval(5000, function () {
     if (ghiaccio) {
