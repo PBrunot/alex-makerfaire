@@ -619,6 +619,44 @@ dfe411111b6666666666666666be2ec66ee2ec666666dd11db66666d1111befd
 ......................6cfffffefeefefffffcbd.....................
 .........................dbb6cfcfcccbbd.........................
 `;
+            case "image17":
+            case "Serpentino di scorta":return img`
+. . . . a a a a a a . . . . . . 
+. . . a f c c c c f a . . . . . 
+. . a c c c c c c c c a . . . . 
+. a f c c c c c c c c f a . . . 
+. a c b 2 f f 2 f c c c a . . . 
+. a c b 2 f f 2 f c c c a . . . 
+. a c c c c c c c c c c a . . . 
+. . a c c c c f a c c f a a . . 
+. . . a a a a a c c f c b b a . 
+. . a c 2 c c c f a c b b b b a 
+. a c c 2 c c a c a c b b f a a 
+a b b b b c b c a a c c c a . . 
+a b b b b b c c a c c c c a . . 
+a f b b b b b c c c c c a a . . 
+. a f b b b b b b c c c a . . . 
+. . a a a a a a a a a a . . . . 
+`;
+            case "image18":
+            case "myImage0":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
         }
         return null;
     })

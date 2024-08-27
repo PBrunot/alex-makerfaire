@@ -10,6 +10,8 @@ namespace SpriteKind {
     export const CristalloGhiaccio = SpriteKind.create()
     export const Narratore_3 = SpriteKind.create()
     export const Attacco_sfera_ghiaccio = SpriteKind.create()
+    export const Narratore_4 = SpriteKind.create()
+    export const Narratore_5 = SpriteKind.create()
 }
 scene.onHitWall(SpriteKind.Nemico_potenziato, function (sprite, location) {
     tiles.setWallAt(location, false)
@@ -45,8 +47,8 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSp
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
-    Narratore_32 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
-    Narratore_32.setPosition(24 * 16, 2 * 16)
+    Narratore_3_ = sprites.create(assets.image`narratore`, SpriteKind.Narratore_3)
+    Narratore_3_.setPosition(24 * 16, 2 * 16)
     Nemico_potenziato_ = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
     Nemico_potenziato_.setPosition(21 * 16, 4 * 16)
     Uscita = sprites.create(img`
@@ -570,10 +572,22 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`
     }
 })
 // Narratore
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
-    Narratore.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_4, function (sprite, otherSprite) {
+    Narratore_4.sayText("Non sei ancora pronto per affrontare l'Invasione", 7000, true)
     pause(7000)
-    Narratore.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 7000, true)
+    Narratore_4.sayText("Nella città si dice che vi sia nascosta una bacchetta,", 7000, true)
+    pause(7000)
+    Narratore_4.sayText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", 7000, true)
+    pause(7000)
+    Narratore_4.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
+    pause(7000)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
+})
+// Narratore
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
+    otherSprite.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
+    pause(7000)
+    otherSprite.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 7000, true)
     pause(7000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
@@ -583,6 +597,16 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Teletrasporto per morte`, fun
     } else {
         cambiaZona(4)
     }
+})
+// Narratore
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_5, function (sprite, otherSprite) {
+    otherSprite.sayText("Il tuo prossimo obiettivo è il castello", 7000, true)
+    pause(7000)
+    otherSprite.sayText("Sembra che i mostri lo stiano già attaccando", 7000, true)
+    pause(7000)
+    otherSprite.sayText("Vai a prendere il cristallo di ghiaccio e poi vai nel portale a fermare l'Invasione!", 7000, true)
+    pause(10000)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 function openinventory () {
     Inventarioaperto = true
@@ -609,6 +633,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
     cambiaZona(3)
+    if (Narratore_5_spawn) {
+        Narratore_5_ = sprites.create(assets.image`narratore`, SpriteKind.Narratore_5)
+        Narratore_5_.setPosition(mySprite.x + 10, mySprite.y + 10)
+        Narratore_5_spawn = false
+    }
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     direzionecolpo = 4
@@ -634,9 +663,15 @@ info.onLifeZero(function () {
     if (zona_corrente == 4) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         mySprite.setPosition(32 * 16, 32 * 16)
+        Narratore_4 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_4)
+        Narratore_4.setPosition(31 * 16, 31 * 16)
+        info.setLife(10)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Guardia_Portale)
+        Nemici = []
+    } else {
+        game.setGameOverMessage(false, "GAME OVER!")
+        game.gameOver(false)
     }
-    game.setGameOverMessage(false, "GAME OVER!")
-    game.gameOver(false)
 })
 // Inventario
 spriteutils.createRenderable(100, function (screen2) {
@@ -685,13 +720,16 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Guardia_Portale, function (s
     }
     sprites.destroy(sprite)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Tel da castello a mappa generale`, function (sprite, location) {
+    cambiaZona(8)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
     if (sprite == Attaccofuoco) {
         VitaNemicoPotenziato += -1
         if (VitaNemicoPotenziato <= 0) {
             sprites.destroy(otherSprite, effects.ashes, 500)
             music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
-            sprites.destroy(Narratore_32)
+            sprites.destroy(Narratore_3_)
         }
     } else {
         music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
@@ -714,7 +752,7 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
             tiles.setCurrentTilemap(tilemap`Villaggio`)
             z1_ripulita = true
             Narratore_2 = sprites.create(assets.image`narratore`, SpriteKind.Narratore2)
-            Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 16)
+            Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 17)
             info.changeLifeBy(3)
         } else if (zona_corrente == 5 && zona5_spawn_cpt == 8) {
             mySprite.sayText("Una porta si è aperta in questa area!", 5000, true)
@@ -775,6 +813,7 @@ function cambiaZona (zona: number) {
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         sprites.destroy(Narratore)
+        sprites.destroy(Narratore_2)
         if (zona_corrente == 7) {
             tiles.placeOnRandomTile(mySprite, assets.tile`Blocco teletrasporto portale`)
         } else {
@@ -786,7 +825,7 @@ function cambiaZona (zona: number) {
         tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
     } else if (zona == 5) {
         tiles.setCurrentTilemap(tilemap`Castello`)
-        tiles.placeOnRandomTile(mySprite, assets.tile`tel mappa centrale`)
+        tiles.placeOnRandomTile(mySprite, assets.tile`Tel da castello a mappa generale`)
         mySprite.y += -32
     } else if (zona == 6) {
         tiles.setCurrentTilemap(tilemap`Città`)
@@ -795,6 +834,10 @@ function cambiaZona (zona: number) {
     } else if (zona == 7) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
+    } else if (zona == 8) {
+        tiles.setCurrentTilemap(tilemap`Mappa generale`)
+        tiles.placeOnRandomTile(mySprite, sprites.dungeon.collectibleInsignia)
+        mySprite.y += 32
     }
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -833,10 +876,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 let zona7_spawn_cpt = 0
 let zona4_spawn_cpt = 0
 let Sferafuoco: Sprite = null
+let Narratore: Sprite = null
 let Narratore_2: Sprite = null
 let zona5_spawn_cpt = 0
 let zone1_spawn_cpt = 0
-let Narratore: Sprite = null
+let Narratore_5_: Sprite = null
+let Narratore_4: Sprite = null
 let zona_corrente = 0
 let Inventarioaperto = false
 let projectile: Sprite = null
@@ -847,7 +892,7 @@ let vx = 0
 let VitaNemicoPotenziato = 0
 let Uscita: Sprite = null
 let Nemico_potenziato_: Sprite = null
-let Narratore_32: Sprite = null
+let Narratore_3_: Sprite = null
 let direzionecolpo = 0
 let Attaccofuoco: Sprite = null
 let z1_ripulita = false
@@ -855,12 +900,14 @@ let Nemici: Sprite[] = []
 let mySprite: Sprite = null
 let ghiaccio = false
 let fuoco = false
+let Narratore_5_spawn = false
 let Tools: Image[] = []
 let Tools_names: string[] = []
 let selectedIndex = 0
 let tool_top = 0
+Narratore_5_spawn = true
 fuoco = false
-ghiaccio = true
+ghiaccio = false
 scene.setBackgroundImage(img`
     bbbbbbbbb666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb666bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbbbbbbbbbbdbddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbdbbbbbbddbbbbbbbbbbbbbbbbbbbbbbbbddddddddd
     bbbbb6b66666666666666666666666666bbbbbbbbbbbbbbbbbbbbbbbbbbb66666666bbbbbbbbbbbbbbbbbbbbbbbbbdddddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddbdddbbdbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddd
@@ -1164,7 +1211,14 @@ Tools_names = [
 Nemici = []
 z1_ripulita = false
 mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
+Nemici = []
 cambiaZona(0)
+game.onUpdateInterval(5000, function () {
+    if (ghiaccio) {
+        tiles.setWallAt(tiles.getTileLocation(32, 38), false)
+        tiles.setWallAt(tiles.getTileLocation(33, 38), false)
+    }
+})
 // Game over
 game.onUpdateInterval(4000, function () {
     if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
@@ -1184,7 +1238,7 @@ game.onUpdateInterval(4000, function () {
     } else if (zona_corrente == 4 && zona4_spawn_cpt < 6) {
         Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawn guardie portale`)
-        Nemici[0].follow(mySprite, 60)
+        Nemici[0].follow(mySprite, 65)
         zona4_spawn_cpt += 1
     } else if (zona_corrente == 7 && zona7_spawn_cpt < 6) {
         Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
