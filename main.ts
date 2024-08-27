@@ -804,6 +804,12 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         tiles.placeOnRandomTile(mySprite, sprites.dungeon.collectibleInsignia)
         mySprite.y += 32
+    } else if (zona == 9) {
+        tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
+        scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`trieste`)
+        scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.BothDirections)
+        mySprite.x = 144
+        mySprite.y = 336
     }
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -871,6 +877,7 @@ let Tools: Image[] = []
 let Tools_names: string[] = []
 let selectedIndex = 0
 let tool_top = 0
+scene.setBackgroundImage(assets.image`trieste`)
 Narratore_5_spawn = true
 fuoco = false
 ghiaccio = false
@@ -1068,8 +1075,11 @@ music.play(music.createSong(assets.song`Invasion_music`), music.PlaybackMode.InB
 pause(5000)
 pauseUntil(() => controller.A.isPressed())
 sprites.destroy(makerfaire)
+mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
+Nemici = []
+cambiaZona(9)
 scene.setBackgroundImage(assets.image`Inizio`)
-mySprite = sprites.create(img`
+let mySprite2 = sprites.create(img`
     f f f f f f f f f f f f f f f f 
     f f f f f f f f f f f f f f f f 
     f f f f f f f f f f f f f f f f 
@@ -1087,9 +1097,9 @@ mySprite = sprites.create(img`
     f f f f f f f f f f f f f f f f 
     f f f f f f f f f f f f f f f f 
     `, SpriteKind.Player)
-mySprite.sayText("... Cos'è questa puzza di fumo?", 4000, true)
+mySprite2.sayText("... Cos'è questa puzza di fumo?", 4000, true)
 pause(4000)
-sprites.destroy(mySprite)
+sprites.destroy(mySprite2)
 let sword2 = img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . b c 
@@ -1159,9 +1169,6 @@ Tools_names = [
 ]
 Nemici = []
 z1_ripulita = false
-mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
-Nemici = []
-cambiaZona(0)
 game.onUpdateInterval(5000, function () {
     if (ghiaccio) {
         tiles.setWallAt(tiles.getTileLocation(32, 38), false)
