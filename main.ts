@@ -51,24 +51,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     Narratore_3_.setPosition(24 * 16, 2 * 16)
     Nemico_potenziato_ = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
     Nemico_potenziato_.setPosition(21 * 16, 4 * 16)
-    Uscita = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, SpriteKind.blocco)
+    Uscita = sprites.create(assets.image`asddassad`, SpriteKind.blocco)
     Uscita.setPosition(20 * 16, 37 * 16)
     Nemico_potenziato_.follow(Uscita, 20)
     VitaNemicoPotenziato = 5
@@ -781,24 +764,7 @@ function cambiaZona (zona: number) {
         }
         tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
         mySprite.y += 16
-        Sferafuoco = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.blocco)
+        Sferafuoco = sprites.create(assets.image`trasparente`, SpriteKind.blocco)
         Sferafuoco.setPosition(21 * 16, 5 * 16)
     } else if (zona == 2) {
         tiles.setCurrentTilemap(tilemap`Villaggio`)
@@ -1163,24 +1129,7 @@ img`
     . d d . . . . . . . . . . . . . 
     `,
 assets.image`Scudo fab`,
-img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `,
+assets.image`q`,
 img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
