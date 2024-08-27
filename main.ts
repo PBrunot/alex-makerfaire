@@ -556,14 +556,15 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`
 })
 // Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_4, function (sprite, otherSprite) {
-    Narratore_42.sayText("Non sei ancora pronto per affrontare l'Invasione", 7000, true)
+    Narratore_4_.sayText("Non sei ancora pronto per affrontare l'Invasione", 7000, true)
     pause(7000)
-    Narratore_42.sayText("Nella città si dice che vi sia nascosta una bacchetta,", 7000, true)
+    Narratore_4_.sayText("Nella città si dice che vi sia nascosta una bacchetta,", 7000, true)
     pause(7000)
-    Narratore_42.sayText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", 7000, true)
+    Narratore_4_.sayText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", 7000, true)
     pause(7000)
-    Narratore_42.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
+    Narratore_4_.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
     pause(7000)
+    CIttàapertachiusa = true
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 // Narratore
@@ -646,8 +647,8 @@ info.onLifeZero(function () {
     if (zona_corrente == 4) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         mySprite.setPosition(32 * 16, 32 * 16)
-        Narratore_42 = sprites.create(assets.image`narratore`, SpriteKind.Narratore_4)
-        Narratore_42.setPosition(31 * 16, 31 * 16)
+        Narratore_4_ = sprites.create(assets.image`narratore`, SpriteKind.Narratore_4)
+        Narratore_4_.setPosition(31 * 16, 31 * 16)
         info.setLife(10)
         sprites.destroyAllSpritesOfKind(SpriteKind.Guardia_Portale)
         Nemici = []
@@ -746,6 +747,13 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
 })
 // Cambio Zona
 function cambiaZona (zona: number) {
+    sprites.destroy(mySprite)
+    sprites.destroy(Narratore)
+    mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
+    // scene.setBackgroundImage()
+    // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
+    scene.cameraFollowSprite(mySprite)
+    controller.moveSprite(mySprite, 100, 100)
     if (zona == 0) {
         tiles.setCurrentTilemap(tilemap`casa iniziale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`letto 1`)
@@ -794,9 +802,11 @@ function cambiaZona (zona: number) {
         tiles.placeOnRandomTile(mySprite, assets.tile`Tel da castello a mappa generale`)
         mySprite.y += -32
     } else if (zona == 6) {
-        tiles.setCurrentTilemap(tilemap`Città`)
-        mySprite.x = 19
-        mySprite.y = 36
+        tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
+        scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`trieste`)
+        scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.BothDirections, scroller.BackgroundLayer.Layer0)
+        mySprite.x = 144
+        mySprite.y = 336
     } else if (zona == 7) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`myTile35`)
@@ -804,17 +814,7 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         tiles.placeOnRandomTile(mySprite, sprites.dungeon.collectibleInsignia)
         mySprite.y += 32
-    } else if (zona == 9) {
-        tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
-        scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`trieste`)
-        scroller.scrollBackgroundWithCamera(scroller.CameraScrollMode.BothDirections)
-        mySprite.x = 144
-        mySprite.y = 336
     }
-    // scene.setBackgroundImage()
-    // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
-    scene.cameraFollowSprite(mySprite)
-    controller.moveSprite(mySprite, 100, 100)
     zona_corrente = zona
     direzionecolpo = 0
     Nemici = []
@@ -853,7 +853,7 @@ let Narratore_2: Sprite = null
 let zona5_spawn_cpt = 0
 let zone1_spawn_cpt = 0
 let Narratore_5_: Sprite = null
-let Narratore_42: Sprite = null
+let Narratore_4_: Sprite = null
 let zona_corrente = 0
 let Inventarioaperto = false
 let projectile: Sprite = null
@@ -873,10 +873,12 @@ let mySprite: Sprite = null
 let ghiaccio = false
 let fuoco = false
 let Narratore_5_spawn = false
+let CIttàapertachiusa = false
 let tool_top = 0
 let selectedIndex = 0
 let Tools_names: string[] = []
 let Tools: Image[] = []
+CIttàapertachiusa = false
 Narratore_5_spawn = true
 fuoco = false
 ghiaccio = false
@@ -965,6 +967,10 @@ game.onUpdateInterval(5000, function () {
     if (ghiaccio) {
         tiles.setWallAt(tiles.getTileLocation(32, 38), false)
         tiles.setWallAt(tiles.getTileLocation(33, 38), false)
+    }
+    if (CIttàapertachiusa) {
+        tiles.setWallAt(tiles.getTileLocation(38, 32), false)
+        tiles.setWallAt(tiles.getTileLocation(38, 33), false)
     }
 })
 // Game over
