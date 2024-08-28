@@ -34,13 +34,13 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.NemicoPotenziato, function (
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherSprite) {
     if (progressoCittà == 2) {
         if (true) {
-            otherSprite.sayText("Risolvi l'enigma", 7000, true)
+            story.spriteSayText(otherSprite, "Risolvi l'enigma", 15)
         } else {
-            otherSprite.sayText("Ecco a te la bacchetta 🪄", 7000, true)
+            story.spriteSayText(otherSprite, "Ecco a te la bacchetta", 15)
             progressoCittà += 1
         }
     } else {
-        otherSprite.sayText("Sparisci della mia vista, plebeo!", 5000, true)
+        story.spriteSayText(otherSprite, "Sparisci della mia vista, plebeo!", 15)
     }
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sprite, location) {
@@ -132,40 +132,31 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite, otherSprite) {
     if (progressoCittà == 0) {
-        otherSprite.sayText("Dov'è la mia scimmia?...", 2000, true)
-        pause(2000)
+        story.spriteSayText(otherSprite, "Dov'è la mia scimmia?...")
     }
     if (progressoCittà == 1) {
         if (p2QuestFallita) {
-            otherSprite.sayText("Dobbiamo riprovarci! Se vuoi la bacchetta devi scortarmi fino a lì!", 7000, true)
+            story.spriteSayText(otherSprite, "Dobbiamo riprovarci! Se vuoi la bacchetta devi scortarmi fino a lì!")
         } else if (p2QuestVittoria == true) {
-            otherSprite.sayText("Grazie mille per l'aiuto!", 4000, true)
-            pause(4000)
-            otherSprite.sayText("Parlerò bene di te alla regina!", 4000, true)
-            pause(4000)
+            story.spriteSayText(otherSprite, "Grazie mille per l'aiuto!")
+            story.spriteSayText(otherSprite, "Parlerò bene di te alla regina!")
             p2Quest = false
             progressoCittà = 2
         }
         if (p2Quest) {
-            otherSprite.sayText("Andiamo!", 2000, true)
+            story.spriteSayText(otherSprite, "Andiamo!")
         } else {
-            otherSprite.sayText("Sei amico della mia scimmia... forse puoi aiutarmi ... ", 7000, true)
-            pause(7000)
-            otherSprite.sayText("Io dovrei andare dal medico sulla strada settentrionale... ", 5000, true)
-            pause(5000)
-            otherSprite.sayText("...ma quel posto è infestato di mostri!", 5000, true)
-            pause(5000)
-            otherSprite.sayText("Se mi scortassi fino a destinazione potrei parlare bene di te alla regina...", 7000, true)
-            pause(7000)
-            otherSprite.sayText("Io ti aspetterò all'ingresso della strada Nord", 6500, true)
-            pause(6500)
-            otherSprite.sayText("Ci vediamo lì, ciaooo", 3000, true)
-            pause(3000)
+            story.spriteSayText(otherSprite, "Sei amico della mia scimmia... forse puoi aiutarmi ... ")
+            story.spriteSayText(otherSprite, "Io dovrei andare dal medico sulla strada settentrionale... ")
+            story.spriteSayText(otherSprite, "...ma quel posto è infestato di mostri!")
+            story.spriteSayText(otherSprite, "Se mi scortassi fino a destinazione potrei parlare bene di te alla regina...")
+            story.spriteSayText(otherSprite, "Io ti aspetterò all'ingresso della strada Nord")
+            story.spriteSayText(otherSprite, "Ci vediamo lì, ciaooo")
             tiles.placeOnRandomTile(otherSprite, assets.tile`Spawn aiutante quest`)
             p2Quest = true
         }
     } else if (progressoCittà == 2) {
-        otherSprite.sayText("Grazie mille per l'aiuto", 4000, true)
+        story.spriteSayText(otherSprite, "Grazie mille per l'aiuto")
     }
 })
 scene.onHitWall(SpriteKind.NemicoPotenziato, function (sprite, location) {
