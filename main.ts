@@ -53,14 +53,13 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sp
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio1, function (sprite, otherSprite) {
     if (progressoCittà == 0) {
         if (BANANNA == false) {
-            otherSprite.sayText("Portami una banana!", 2000, true)
+            game.showLongText("Portami una banana!", DialogLayout.Top)
         } else if (BANANNA == true) {
-            otherSprite.sayText("Grazie per la banana! 🍌", 2000, true)
-            pause(2000)
+            game.showLongText("Grazie per la banana!", DialogLayout.Top)
             progressoCittà = 1
         }
     } else {
-        otherSprite.sayText("🍌Gnam🍌", 1000, true)
+        game.showLongText("Gnam", DialogLayout.Top)
     }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -98,9 +97,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
     nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    p2Uscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
-    p2Uscita.setPosition(20 * 16, 37 * 16)
-    nemicoPotenziato.follow(p2Uscita, 20)
+    p2QuestUscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
+    p2QuestUscita.setPosition(20 * 16, 37 * 16)
+    nemicoPotenziato.follow(p2QuestUscita, 20)
     vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -202,6 +201,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite,
             otherSprite.sayText("Ah, ci voleva proprio una bella rinfrescata", 5000, true)
             pause(5000)
             otherSprite.sayText("Ecco a te le banane, come promesso", 5000, true)
+            pause(5000)
             BANANNA = true
         }
     }
@@ -683,10 +683,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`
 })
 // Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
-    otherSprite.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
-    pause(7000)
-    otherSprite.sayText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", 7000, true)
-    pause(7000)
+    game.showLongText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", DialogLayout.Top)
+    game.showLongText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", DialogLayout.Top)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Teletrasporto per morte`, function (sprite, location) {
@@ -736,7 +734,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite, otherSprite) {
-    if (BANANNA == true) {
+    if (BANANNA) {
         otherSprite.sayText("Grazie mille amico", 3500, true)
         pause(3500)
     } else {
@@ -745,7 +743,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite, oth
             pause(3500)
             otherSprite.sayText("Se mi aiuterai ti darò un casco di banane (anche se non è molto)", 6500, true)
             pause(6500)
-            otherSprite.sayText("Premi \"A\" per accettare, premi \"B\" per rifiutare (NON cliccare tante volte)", 6500, true)
+            otherSprite.sayText("Premi \"A\" per accettare, premi \"B\" per rifiutare", 6500, true)
             contadinoDialogo1 = true
             if (contadinoDialogo2) {
                 otherSprite.sayText("Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato", 7000, true)
@@ -781,11 +779,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.CristalloGhiaccio, function (spr
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
     cambiaZona(2)
 })
+// Cambio mondo
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Da città a mondo generale`, function (sprite, location) {
+    cambiaZona(3)
+})
 scene.onOverlapTile(SpriteKind.Personaggio2, assets.tile`Arrivo personaggio2`, function (sprite, location) {
-    tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
-    tiles.placeOnRandomTile(eroe, assets.tile`Spawn aiutante quest`)
-    tiles.placeOnRandomTile(sprite, assets.tile`Spawn aiutante quest`)
+    effects.smiles.startScreenEffect(500)
+    pause(500)
     p2QuestVittoria = true
+    cambiaZona(5)
+    tiles.placeOnRandomTile(eroe, assets.tile`Spawn aiutante quest`)
+    tiles.placeOnRandomTile(p2, assets.tile`Spawn aiutante quest`)
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     if (inventarioAperto) {
@@ -897,10 +901,15 @@ function cambiaZona (zona: number) {
     sprites.destroy(narratore_1)
     sprites.destroy(narratore_2)
     sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    arrNemici = []
     sprites.destroy(narratore_3)
     sprites.destroy(narratore_4)
     sprites.destroy(narratore_5)
     sprites.destroy(contadino1)
+    sprites.destroy(p1)
+    sprites.destroy(p2)
+    sprites.destroy(reginaCittà)
     eroe = sprites.create(assets.image`Eroe`, SpriteKind.Player)
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -977,12 +986,11 @@ function cambiaZona (zona: number) {
         if (p2Quest) {
             p2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
             p2.follow(eroe, 45)
-            tiles.placeOnRandomTile(p2, assets.tile`strada settentrionale`)
+            tiles.placeOnRandomTile(p2, assets.tile`da strada nord a città`)
         }
     }
     zonaCorrente = zona
     direzioneColpo = 0
-    arrNemici = []
 }
 // Combattimento
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
@@ -1031,7 +1039,7 @@ let vx = 0
 let contadino1: Sprite = null
 let zonaCorrente = 0
 let contadinoDialogo1 = false
-let p2Uscita: Sprite = null
+let p2QuestUscita: Sprite = null
 let nemicoPotenziato: Sprite = null
 let reginaCittà: Sprite = null
 let p2Quest = false
@@ -1059,7 +1067,7 @@ let p2Regina = false
 cittàAperta = false
 spawnNarratore5 = true
 fuoco = false
-ghiaccio = true
+ghiaccio = false
 z1Ripulita = false
 progressoCittà = 0
 p2Vita = 15
