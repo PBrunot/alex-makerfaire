@@ -48,7 +48,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherS
     }
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sprite, location) {
-    if (sprite == Attaccofuoco) {
+    if (sprite == attaccoFuoco) {
         tiles.setTileAt(location, assets.tile`tel mappa centrale`)
     }
     sprites.destroy(sprite)
@@ -68,20 +68,20 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio1, function (sprite, 
     }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    direzionecolpo = 3
+    direzioneColpo = 3
 })
 function spriteCittà () {
-    PersonaggioCittà1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
-    tiles.placeOnRandomTile(PersonaggioCittà1, assets.tile`spawnPersonaggio`)
-    PersonaggioCittà2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
-    if (AIutantequest) {
-        tiles.placeOnRandomTile(PersonaggioCittà2, assets.tile`Spawn aiutante quest`)
+    p1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
+    tiles.placeOnRandomTile(p1, assets.tile`spawnPersonaggio`)
+    p2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
+    if (p2Quest) {
+        tiles.placeOnRandomTile(p2, assets.tile`Spawn aiutante quest`)
     } else {
-        tiles.placeOnRandomTile(PersonaggioCittà2, assets.tile`spawnPersonaggio`)
-        PersonaggioCittà2.y += -16
+        tiles.placeOnRandomTile(p2, assets.tile`spawnPersonaggio`)
+        p2.y += -16
     }
-    ReginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
-    tiles.placeOnRandomTile(ReginaCittà, assets.tile`spawnPersonaggio`)
+    reginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
+    tiles.placeOnRandomTile(reginaCittà, assets.tile`spawnPersonaggio`)
 }
 // Game Over
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSprite) {
@@ -92,37 +92,37 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     Nemico_potenziato_ = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
     Nemico_potenziato_.setPosition(21 * 16, 4 * 16)
-    Uscita = sprites.create(assets.image`asddassad`, SpriteKind.blocco)
-    Uscita.setPosition(20 * 16, 37 * 16)
-    Nemico_potenziato_.follow(Uscita, 20)
-    VitaNemicoPotenziato = 5
+    p2Uscita = sprites.create(assets.image`asddassad`, SpriteKind.blocco)
+    p2Uscita.setPosition(20 * 16, 37 * 16)
+    Nemico_potenziato_.follow(p2Uscita, 20)
+    vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Contadino_dialogo2 && zona_corrente == 2) {
-        Contadino.sayText("Va bene, sarà per la prossima volta", 3000, true)
+    if (contadinoDialogo1 && zonaCorrente == 2) {
+        contadino1.sayText("Va bene, sarà per la prossima volta", 3000, true)
     }
-    if (direzionecolpo == 1) {
+    if (direzioneColpo == 1) {
         vx = 110
         vy = 0
-    } else if (direzionecolpo == 2) {
+    } else if (direzioneColpo == 2) {
         vx = -110
         vy = 0
-    } else if (direzionecolpo == 4) {
+    } else if (direzioneColpo == 4) {
         vx = 0
         vy = 110
-    } else if (direzionecolpo == 3) {
+    } else if (direzioneColpo == 3) {
         vx = 0
         vy = -110
     }
     if (ghiaccio) {
-        AttaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, mySprite, vx, vy)
+        attaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, mySprite, vx, vy)
         pause(1000)
-        sprites.destroy(AttaccoGhiaccio)
+        sprites.destroy(attaccoGhiaccio)
         pause(1000)
     } else if (fuoco) {
-        Attaccofuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, vx, vy)
+        attaccoFuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, mySprite, vx, vy)
         pause(1000)
-        sprites.destroy(Attaccofuoco)
+        sprites.destroy(attaccoFuoco)
         pause(1000)
     }
 })
@@ -133,17 +133,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite, 
         pause(2000)
     }
     if (progressoCittà == 1) {
-        if (Perso_personaggio2) {
+        if (p2QuestFallita) {
             otherSprite.sayText("Dobbiamo riprovarci! Se vuoi la bacchetta devi scortarmi fino a lì!", 7000, true)
-        } else if (Vittoria == true) {
+        } else if (p2QuestVittoria == true) {
             otherSprite.sayText("Grazie mille per l'aiuto!", 4000, true)
             pause(4000)
             otherSprite.sayText("Parlerò bene di te alla regina!", 4000, true)
             pause(4000)
-            AIutantequest = false
+            p2Quest = false
             progressoCittà = 2
         }
-        if (AIutantequest) {
+        if (p2Quest) {
             otherSprite.sayText("Andiamo!", 2000, true)
         } else {
             otherSprite.sayText("Sei amico della mia scimmia... forse puoi aiutarmi ... ", 7000, true)
@@ -159,7 +159,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite, 
             otherSprite.sayText("Ci vediamo lì, ciaooo", 3000, true)
             pause(3000)
             tiles.placeOnRandomTile(otherSprite, assets.tile`Spawn aiutante quest`)
-            AIutantequest = true
+            p2Quest = true
         }
     } else if (progressoCittà == 2) {
         otherSprite.sayText("Grazie mille per l'aiuto", 4000, true)
@@ -172,8 +172,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (spr
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, otherSprite) {
-    Sferadaprendere = sprites.create(assets.image`sferadaprendere`, SpriteKind.Cristallofuoco)
-    Sferadaprendere.setPosition(21 * 16, 5 * 16)
+    sferaDaPrendere = sprites.create(assets.image`sferadaprendere`, SpriteKind.Cristallofuoco)
+    sferaDaPrendere.setPosition(21 * 16, 5 * 16)
     otherSprite.sayText("Grazie mille per aver protetto il villaggio!", 5000, true)
     pause(5000)
     otherSprite.sayText("In tutto il mondo, i mostri stanno cercando di rubare i cristalli ", 6000, true)
@@ -191,8 +191,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, ot
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite, otherSprite) {
-    if (Contadinodialogo1) {
-        if (sprite == AttaccoGhiaccio) {
+    if (contadinoDialogo2) {
+        if (sprite == attaccoGhiaccio) {
             sprites.destroy(sprite, effects.spray, 500)
             otherSprite.sayText("Ah, ci voleva proprio una bella rinfrescata", 5000, true)
             pause(5000)
@@ -202,14 +202,14 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite,
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Contadino_dialogo2 && zona_corrente == 2) {
-        Contadino.sayText("Grazie mille amico", 2000, true)
+    if (contadinoDialogo1 && zonaCorrente == 2) {
+        contadino1.sayText("Grazie mille amico", 2000, true)
         pause(2000)
-        Contadino.sayText("Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato", 7000, true)
+        contadino1.sayText("Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato", 7000, true)
         pause(7000)
-        Contadinodialogo1 = true
+        contadinoDialogo2 = true
     }
-    if (direzionecolpo == 1) {
+    if (direzioneColpo == 1) {
         projectile = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . 1 b . . 
             . . . . . . . . . . . . 1 b . . 
@@ -361,7 +361,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         100,
         false
         )
-    } else if (direzionecolpo == 2) {
+    } else if (direzioneColpo == 2) {
         projectile = sprites.createProjectileFromSprite(assets.image`myImage`, mySprite, -100, 0)
         pause(150)
         sprites.destroy(projectile)
@@ -496,7 +496,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         100,
         false
         )
-    } else if (direzionecolpo == 4) {
+    } else if (direzioneColpo == 4) {
         projectile = sprites.createProjectileFromSprite(assets.image`attacco inbasso`, mySprite, 0, 100)
         pause(100)
         sprites.destroy(projectile)
@@ -635,32 +635,32 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     pause(500)
 })
 function closeinventory () {
-    Inventarioaperto = false
+    inventarioAperto = false
     controller.moveSprite(mySprite)
 }
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Personaggio2, function (sprite, otherSprite) {
-    Vita_personaggio2 += -1
+    p2Vita += -1
     pause(2000)
-    if (Vita_personaggio2 == 0) {
+    if (p2Vita == 0) {
         tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
         tiles.placeOnRandomTile(mySprite, assets.tile`Spawn aiutante quest`)
         tiles.placeOnRandomTile(otherSprite, assets.tile`Spawn aiutante quest`)
-        Perso_personaggio2 = true
-        Vita_personaggio2 = 15
+        p2QuestFallita = true
+        p2Vita = 15
     }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    direzionecolpo = 2
+    direzioneColpo = 2
     selectedIndex = Math.max(selectedIndex - 1, 0)
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sprite, location) {
-    if (sprite == Attaccofuoco) {
+    if (sprite == attaccoFuoco) {
         tiles.setTileAt(location, sprites.castle.tilePath5)
     }
     sprites.destroy(sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`, function (sprite, location) {
-    if (zona_corrente == 7) {
+    if (zonaCorrente == 7) {
         cambiaZona(3)
     } else {
         cambiaZona(7)
@@ -676,7 +676,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_4, function (sprite, o
     pause(7000)
     Narratore_4_.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
     pause(7000)
-    CIttàaperta = true
+    cittàAperta = true
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 // Narratore
@@ -688,7 +688,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, ot
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Teletrasporto per morte`, function (sprite, location) {
-    if (zona_corrente == 4) {
+    if (zonaCorrente == 4) {
         cambiaZona(3)
     } else {
         cambiaZona(4)
@@ -705,13 +705,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_5, function (sprite, o
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 function openinventory () {
-    Inventarioaperto = true
+    inventarioAperto = true
     controller.moveSprite(mySprite, 0, 0)
     selectedIndex = 0
 }
 // Attacchi
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    direzionecolpo = 1
+    direzioneColpo = 1
     selectedIndex = Math.min(selectedIndex + 1, Tools.length - 1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
@@ -721,9 +721,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprit
 })
 // Cambio mondo
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite, location) {
-    if (zona_corrente == 0) {
+    if (zonaCorrente == 0) {
         cambiaZona(1)
-    } else if (zona_corrente == 1 || zona_corrente == 2) {
+    } else if (zonaCorrente == 1 || zonaCorrente == 2) {
         cambiaZona(0)
     }
 })
@@ -738,8 +738,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite, oth
             otherSprite.sayText("Se mi aiuterai ti darò un casco di banane (anche se non è molto)", 6500, true)
             pause(6500)
             otherSprite.sayText("Premi \"A\" per accettare, premi \"B\" per rifiutare (NON cliccare tante volte)", 6500, true)
-            Contadino_dialogo2 = true
-            if (Contadinodialogo1) {
+            contadinoDialogo1 = true
+            if (contadinoDialogo2) {
                 otherSprite.sayText("Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato", 7000, true)
                 pause(7000)
             }
@@ -755,13 +755,13 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function
     }
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    direzionecolpo = 4
+    direzioneColpo = 4
 })
 // Combattimento
 sprites.onOverlap(SpriteKind.Player, SpriteKind.CristalloGhiaccio, function (sprite, otherSprite) {
     ghiaccio = true
     Tools[3] = assets.image`Attacco di ghiaccio`
-    Tools_names[3] = "Cristallo ghiaccio"
+    toolsNames[3] = "Cristallo ghiaccio"
     sprites.destroy(otherSprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
@@ -771,17 +771,17 @@ scene.onOverlapTile(SpriteKind.Personaggio2, assets.tile`Arrivo personaggio2`, f
     tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
     tiles.placeOnRandomTile(mySprite, assets.tile`Spawn aiutante quest`)
     tiles.placeOnRandomTile(sprite, assets.tile`Spawn aiutante quest`)
-    Vittoria = true
+    p2QuestVittoria = true
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (Inventarioaperto) {
+    if (inventarioAperto) {
         closeinventory()
     } else {
         openinventory()
     }
 })
 info.onLifeZero(function () {
-    if (zona_corrente == 4) {
+    if (zonaCorrente == 4) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         mySprite.setPosition(32 * 16, 32 * 16)
         Narratore_4_ = sprites.create(assets.image`narratore`, SpriteKind.Narratore_4)
@@ -796,13 +796,13 @@ info.onLifeZero(function () {
 })
 // Inventario
 spriteutils.createRenderable(100, function (screen2) {
-    if (Inventarioaperto) {
+    if (inventarioAperto) {
         screen2.fillRect(10, 10, 170, 100, 4)
         screen2.drawRect(10, 10, 170, 100, 14)
         screen2.print("INVENTARIO", 14, 14, 15)
 screen2.print(Tools_names[selectedIndex], 80, 14, 0)
 screen2.fillRect(14, 24, 162, 1, 15)
-        tool_top = 28
+        toolTop = 28
         for (let index = 0; index <= Tools.length - 1; index++) {
             spriteutils.drawTransparentImage(Tools[index], screen2, 14 + index * 20, tool_top)
         }
@@ -831,7 +831,7 @@ screen2.fillRect(14, 24, 162, 1, 15)
     }
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
-    if (sprite == AttaccoGhiaccio) {
+    if (sprite == attaccoGhiaccio) {
         if (randint(1, 6) >= 3) {
             sprites.destroy(otherSprite, effects.disintegrate, 500)
             music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
@@ -848,9 +848,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`da strada nord a città`, fun
     cambiaZona(6)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
-    if (sprite == Attaccofuoco) {
-        VitaNemicoPotenziato += -1
-        if (VitaNemicoPotenziato <= 0) {
+    if (sprite == attaccoFuoco) {
+        vitaNemicoPotenziato += -1
+        if (vitaNemicoPotenziato <= 0) {
             sprites.destroy(otherSprite, effects.ashes, 500)
             music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
             sprites.destroy(Narratore_3_)
@@ -874,14 +874,14 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`strada settentrionale`, funct
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
     Nemici.removeAt(Nemici.indexOf(sprite))
     if (Nemici.length == 0) {
-        if (zona_corrente == 1 && zone1_spawn_cpt == 6) {
+        if (zonaCorrente == 1 && zone1SpawnCnt == 6) {
             effects.blizzard.startScreenEffect(2000)
             tiles.setCurrentTilemap(tilemap`Villaggio`)
-            z1_ripulita = true
+            z1Ripulita = true
             Narratore_2 = sprites.create(assets.image`narratore`, SpriteKind.Narratore2)
             Narratore_2.setPosition(mySprite.x - 16, mySprite.y - 17)
             info.changeLifeBy(3)
-        } else if (zona_corrente == 5 && zona5_spawn_cpt == 8) {
+        } else if (zonaCorrente == 5 && zona5SpawnCnt == 8) {
             mySprite.sayText("Una porta si è aperta in questa area!", 5000, true)
             tiles.setTileAt(tiles.getTileLocation(25, 3), assets.tile`Portaaperta`)
             tiles.setWallAt(tiles.getTileLocation(25, 3), false)
@@ -899,7 +899,7 @@ function cambiaZona (zona: number) {
     sprites.destroy(Narratore_3_)
     sprites.destroy(Narratore_4_)
     sprites.destroy(Narratore_5_)
-    sprites.destroy(Contadino)
+    sprites.destroy(contadino1)
     mySprite = sprites.create(assets.image`Eroe`, SpriteKind.Player)
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -909,28 +909,28 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`casa iniziale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`letto 1`)
         mySprite.y += 32
-        if (z1_ripulita == true) {
+        if (z1Ripulita == true) {
             sprites.destroy(Narratore)
         } else {
             Narratore = sprites.create(assets.image`narratore`, SpriteKind.Narratore1)
             Narratore.setPosition(8 * 16, 18 * 16)
         }
     } else if (zona == 1) {
-        if (z1_ripulita == true) {
+        if (z1Ripulita == true) {
             tiles.setCurrentTilemap(tilemap`Villaggio`)
-            Contadino = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
+            contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
             mySprite.setPosition(5 * 16, 8 * 16)
         } else {
             tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
         }
         tiles.placeOnRandomTile(mySprite, assets.tile`Porta casa`)
         mySprite.y += 16
-        Sferafuoco = sprites.create(assets.image`trasparente`, SpriteKind.blocco)
-        Sferafuoco.setPosition(21 * 16, 5 * 16)
+        sferaFuoco = sprites.create(assets.image`trasparente`, SpriteKind.blocco)
+        sferaFuoco.setPosition(21 * 16, 5 * 16)
     } else if (zona == 2) {
         tiles.setCurrentTilemap(tilemap`Villaggio`)
-        Contadino = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
-        Contadino.setPosition(5 * 16, 8 * 16)
+        contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
+        contadino1.setPosition(5 * 16, 8 * 16)
         tiles.placeOnRandomTile(mySprite, assets.tile`Ghiaccio_3`)
         mySprite.y += -32
         tiles.setTileAt(tiles.getTileLocation(38, 29), sprites.castle.tilePath5)
@@ -941,7 +941,7 @@ function cambiaZona (zona: number) {
         }
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
-        if (zona_corrente == 7) {
+        if (zonaCorrente == 7) {
             tiles.placeOnRandomTile(mySprite, assets.tile`Blocco teletrasporto portale`)
         } else {
             tiles.placeOnRandomTile(mySprite, assets.tile`myTile2`)
@@ -972,17 +972,17 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Strada settentrionale`)
         tiles.placeOnRandomTile(mySprite, assets.tile`da strada nord a città`)
         mySprite.y += -32
-        sprites.destroy(ReginaCittà)
-        sprites.destroy(PersonaggioCittà1)
-        sprites.destroy(PersonaggioCittà2)
-        if (AIutantequest) {
-            PersonaggioCittà2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
-            PersonaggioCittà2.follow(mySprite, 45)
-            tiles.placeOnRandomTile(PersonaggioCittà2, assets.tile`strada settentrionale`)
+        sprites.destroy(reginaCittà)
+        sprites.destroy(p1)
+        sprites.destroy(p2)
+        if (p2Quest) {
+            p2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
+            p2.follow(mySprite, 45)
+            tiles.placeOnRandomTile(p2, assets.tile`strada settentrionale`)
         }
     }
-    zona_corrente = zona
-    direzionecolpo = 0
+    zonaCorrente = zona
+    direzioneColpo = 0
     Nemici = []
 }
 // Combattimento
@@ -990,12 +990,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite
     fuoco = true
     tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
     Tools[2] = assets.image`Attacco di fuoco`
-    Tools_names[2] = "Cristallo fuoco"
+    toolsNames[2] = "Cristallo fuoco"
 })
 sprites.onDestroyed(SpriteKind.Nemico_potenziato, function (sprite) {
-    Sferadaprendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
-    Sferadaprendere.x = sprite.x
-    Sferadaprendere.y = sprite.y
+    sferaDaPrendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
+    sferaDaPrendere.x = sprite.x
+    sferaDaPrendere.y = sprite.y
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
@@ -1011,57 +1011,59 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(1000)
 })
-let zona9_spawn_cpt = 0
-let zona7_spawn_cpt = 0
-let zona4_spawn_cpt = 0
-let Sferafuoco: Sprite = null
+let zona9SpawnCnt = 0
+let zona7SpawnCnt = 0
+let zona4SpawnCnt = 0
+let sferaFuoco: Sprite = null
 let Narratore: Sprite = null
 let Narratore_2: Sprite = null
-let zona5_spawn_cpt = 0
-let zone1_spawn_cpt = 0
+let zona5SpawnCnt = 0
+let zone1SpawnCnt = 0
 let Narratore_3_: Sprite = null
+let toolTop = 0
 let Narratore_5_: Sprite = null
 let Narratore_4_: Sprite = null
-let Inventarioaperto = false
+let inventarioAperto = false
 let projectile: Sprite = null
-let Contadinodialogo1 = false
-let Sferadaprendere: Sprite = null
-let Perso_personaggio2 = false
-let AttaccoGhiaccio: Sprite = null
+let contadinoDialogo2 = false
+let sferaDaPrendere: Sprite = null
+let p2QuestFallita = false
+let attaccoGhiaccio: Sprite = null
 let vy = 0
 let vx = 0
-let Contadino: Sprite = null
-let zona_corrente = 0
-let Contadino_dialogo2 = false
-let VitaNemicoPotenziato = 0
-let Uscita: Sprite = null
+let contadino1: Sprite = null
+let zonaCorrente = 0
+let contadinoDialogo1 = false
+let vitaNemicoPotenziato = 0
+let p2Uscita: Sprite = null
 let Nemico_potenziato_: Sprite = null
-let ReginaCittà: Sprite = null
-let AIutantequest = false
-let PersonaggioCittà2: Sprite = null
-let PersonaggioCittà1: Sprite = null
-let direzionecolpo = 0
+let reginaCittà: Sprite = null
+let p2Quest = false
+let p2: Sprite = null
+let p1: Sprite = null
+let direzioneColpo = 0
 let BANANNA = false
-let Attaccofuoco: Sprite = null
+let attaccoFuoco: Sprite = null
+let toolsNames: string[] = []
 let Nemici: Sprite[] = []
 let mySprite: Sprite = null
-let Vittoria = false
-let Vita_personaggio2 = 0
+let p2QuestVittoria = false
+let p2Vita = 0
 let progressoCittà = 0
-let z1_ripulita = false
+let z1Ripulita = false
 let ghiaccio = false
 let fuoco = false
 let Narratore_5_spawn = false
-let CIttàaperta = false
-let Aiutanteregina = false
-CIttàaperta = false
+let cittàAperta = false
+let p2Regina = false
+cittàAperta = false
 Narratore_5_spawn = true
 fuoco = false
 ghiaccio = true
-z1_ripulita = false
+z1Ripulita = false
 progressoCittà = 0
-Vita_personaggio2 = 15
-Vittoria = false
+p2Vita = 15
+p2QuestVittoria = false
 let tool_top = 0
 let selectedIndex = 0
 let Tools_names: string[] = []
@@ -1137,7 +1139,7 @@ img`
     `,
 assets.image`sferadaprendere`
 ]
-Tools_names = [
+toolsNames = [
 "Spada",
 "Scudo Fab",
 "",
@@ -1148,41 +1150,41 @@ Nemici = []
 cambiaZona(0)
 // Game over
 game.onUpdateInterval(4000, function () {
-    if (zona_corrente == 1 && zone1_spawn_cpt < 6) {
+    if (zonaCorrente == 1 && zone1SpawnCnt < 6) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
         if (randint(0, 10) < 6) {
-            Nemici[0].follow(Sferafuoco, 20)
+            Nemici[0].follow(sferaFuoco, 20)
         } else {
             Nemici[0].follow(mySprite, 20)
         }
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
-        zone1_spawn_cpt += 1
-    } else if (zona_corrente == 5 && zona5_spawn_cpt < 8) {
+        zone1SpawnCnt += 1
+    } else if (zonaCorrente == 5 && zona5SpawnCnt < 8) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
         Nemici[0].follow(mySprite, 20)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
-        zona5_spawn_cpt += 1
-    } else if (zona_corrente == 4 && zona4_spawn_cpt < 6) {
+        zona5SpawnCnt += 1
+    } else if (zonaCorrente == 4 && zona4SpawnCnt < 6) {
         Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawn guardie portale`)
         Nemici[0].follow(mySprite, 65)
-        zona4_spawn_cpt += 1
-    } else if (zona_corrente == 7 && zona7_spawn_cpt < 9) {
+        zona4SpawnCnt += 1
+    } else if (zonaCorrente == 7 && zona7SpawnCnt < 9) {
         Nemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawn guardie portale`)
         Nemici[0].follow(mySprite, 40)
-        zona7_spawn_cpt += 1
-    } else if (zona_corrente == 9 && zona9_spawn_cpt < 15 && AIutantequest) {
+        zona7SpawnCnt += 1
+    } else if (zonaCorrente == 9 && zona9SpawnCnt < 15 && p2Quest) {
         Nemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
-        Nemici[0].follow(PersonaggioCittà2, 30)
+        Nemici[0].follow(p2, 30)
         tiles.placeOnRandomTile(Nemici[0], assets.tile`Spawner nemici normali`)
-        zona9_spawn_cpt += 1
+        zona9SpawnCnt += 1
     }
     if (ghiaccio) {
         tiles.setWallAt(tiles.getTileLocation(32, 38), false)
         tiles.setWallAt(tiles.getTileLocation(33, 38), false)
     }
-    if (CIttàaperta) {
+    if (cittàAperta) {
         tiles.setWallAt(tiles.getTileLocation(38, 32), false)
         tiles.setWallAt(tiles.getTileLocation(38, 33), false)
     }
