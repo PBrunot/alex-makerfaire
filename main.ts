@@ -1,39 +1,34 @@
 namespace SpriteKind {
-    export const Nemico_potenziato = SpriteKind.create()
-    export const Guardia_Portale = SpriteKind.create()
-    export const Boss_finale = SpriteKind.create()
-    export const blocco = SpriteKind.create()
+    export const NemicoPotenziato = SpriteKind.create()
+    export const GuardiaPortale = SpriteKind.create()
+    export const BossFinale = SpriteKind.create()
+    export const Blocco = SpriteKind.create()
     export const Narratore1 = SpriteKind.create()
     export const Narratore2 = SpriteKind.create()
     export const Cristallofuoco = SpriteKind.create()
     export const Attacco_sfera_fuoco = SpriteKind.create()
     export const CristalloGhiaccio = SpriteKind.create()
-    export const Narratore_3 = SpriteKind.create()
+    export const Narratore3 = SpriteKind.create()
     export const Attacco_sfera_ghiaccio = SpriteKind.create()
-    export const Narratore_4 = SpriteKind.create()
+    export const Narratore4 = SpriteKind.create()
     export const Narratore5 = SpriteKind.create()
     export const Personaggio1 = SpriteKind.create()
     export const Personaggio2 = SpriteKind.create()
     export const Regina = SpriteKind.create()
     export const Contadino = SpriteKind.create()
 }
-scene.onHitWall(SpriteKind.Nemico_potenziato, function (sprite, location) {
-    tiles.setWallAt(location, false)
-    tiles.setTileAt(location, assets.tile`muro distrutto`)
-})
-// Villaggio
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_3, function (sprite, otherSprite) {
-    otherSprite.sayText("Attento! Il mostro sta scappando con il cristallo!", 4000, true)
-    pause(5000)
-    otherSprite.sayText("Usa il fuoco per fargli del danno, è il suo punto debole!", 6000, true)
-    pause(5000)
-    sprites.destroy(otherSprite, effects.blizzard, 500)
-})
-// NEMICI
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss_finale, function (sprite, otherSprite) {
-    info.changeLifeBy(-3)
-    music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.InBackground)
-    pause(1000)
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.NemicoPotenziato, function (sprite, otherSprite) {
+    if (sprite == attaccoFuoco) {
+        vitaNemicoPotenziato += -1
+        if (vitaNemicoPotenziato <= 0) {
+            sprites.destroy(otherSprite, effects.ashes, 500)
+            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+            sprites.destroy(narratore_3)
+        }
+    } else {
+        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
+    }
+    sprites.destroy(sprite)
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherSprite) {
@@ -81,6 +76,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore5, function (sprite, ot
     pause(7000)
     sprites.destroy(otherSprite, effects.blizzard, 500)
 })
+sprites.onDestroyed(SpriteKind.NemicoPotenziato, function (sprite) {
+    sferaDaPrendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
+    sferaDaPrendere.x = sprite.x
+    sferaDaPrendere.y = sprite.y
+})
 function spriteCittà () {
     p1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
     tiles.placeOnRandomTile(p1, assets.tile`spawnPersonaggio`)
@@ -94,16 +94,11 @@ function spriteCittà () {
     reginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
     tiles.placeOnRandomTile(reginaCittà, assets.tile`spawnPersonaggio`)
 }
-// Game Over
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.blocco, function (sprite, otherSprite) {
-    game.setGameOverMessage(false, "Il cristallo è stato rubato!")
-    game.gameOver(false)
-})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
-    nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.Nemico_potenziato)
+    nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
     nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    p2Uscita = sprites.create(assets.image`asddassad`, SpriteKind.blocco)
+    p2Uscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
     p2Uscita.setPosition(20 * 16, 37 * 16)
     nemicoPotenziato.follow(p2Uscita, 20)
     vitaNemicoPotenziato = 5
@@ -176,10 +171,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite, 
         otherSprite.sayText("Grazie mille per l'aiuto", 4000, true)
     }
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
-    info.changeLifeBy(-2)
-    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
-    pause(1000)
+scene.onHitWall(SpriteKind.NemicoPotenziato, function (sprite, location) {
+    tiles.setWallAt(location, false)
+    tiles.setTileAt(location, assets.tile`muro distrutto`)
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite, otherSprite) {
@@ -645,10 +639,20 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
     pause(500)
 })
+// Game Over
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Blocco, function (sprite, otherSprite) {
+    game.setGameOverMessage(false, "Il cristallo è stato rubato!")
+    game.gameOver(false)
+})
 function closeinventory () {
     inventarioAperto = false
     controller.moveSprite(eroe)
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.GuardiaPortale, function (sprite, otherSprite) {
+    info.changeLifeBy(-3)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
+    pause(2000)
+})
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Personaggio2, function (sprite, otherSprite) {
     p2Vita += -1
     pause(2000)
@@ -678,19 +682,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Blocco teletrasporto portale`
     }
 })
 // Narratore
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore_4, function (sprite, otherSprite) {
-    Narratore_4_.sayText("Non sei ancora pronto per affrontare l'Invasione", 7000, true)
-    pause(7000)
-    Narratore_4_.sayText("Nella città si dice che vi sia nascosta una bacchetta,", 7000, true)
-    pause(7000)
-    Narratore_4_.sayText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", 7000, true)
-    pause(7000)
-    Narratore_4_.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
-    pause(7000)
-    cittàAperta = true
-    sprites.destroy(otherSprite, effects.blizzard, 500)
-})
-// Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
     otherSprite.sayText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", 7000, true)
     pause(7000)
@@ -710,15 +701,31 @@ function openinventory () {
     controller.moveSprite(eroe, 0, 0)
     selectedIndex = 0
 }
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore3, function (sprite, otherSprite) {
+    otherSprite.sayText("Attento! Il mostro sta scappando con il cristallo!", 4000, true)
+    pause(5000)
+    otherSprite.sayText("Usa il fuoco per fargli del danno, è il suo punto debole!", 6000, true)
+    pause(5000)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
+})
+// Narratore
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore4, function (sprite, otherSprite) {
+    narratore_4.sayText("Non sei ancora pronto per affrontare l'Invasione", 7000, true)
+    pause(7000)
+    narratore_4.sayText("Nella città si dice che vi sia nascosta una bacchetta,", 7000, true)
+    pause(7000)
+    narratore_4.sayText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", 7000, true)
+    pause(7000)
+    narratore_4.sayText("Cosa aspetti, presto,valla a cercare!", 7000, true)
+    pause(7000)
+    cittàAperta = true
+    sprites.destroy(otherSprite, effects.blizzard, 500)
+})
 // Attacchi
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     direzioneColpo = 1
     selectedIndex = Math.min(selectedIndex + 1, arrTools.length - 1)
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
-    info.changeLifeBy(-3)
-    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
-    pause(2000)
 })
 // Cambio mondo
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Porta casa`, function (sprite, location) {
@@ -749,11 +756,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite, oth
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite, location) {
     cambiaZona(3)
-    if (Narratore_5_spawn) {
-        Narratore_5_ = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore5)
-        Narratore_5_.setPosition(eroe.x + 10, eroe.y + 10)
-        Narratore_5_spawn = false
+    if (spawnNarratore5) {
+        narratore_5 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore5)
+        narratore_5.setPosition(eroe.x + 10, eroe.y + 10)
+        spawnNarratore5 = false
     }
+})
+// NEMICI
+sprites.onOverlap(SpriteKind.Player, SpriteKind.BossFinale, function (sprite, otherSprite) {
+    info.changeLifeBy(-3)
+    music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.InBackground)
+    pause(1000)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     direzioneColpo = 4
@@ -785,10 +798,10 @@ info.onLifeZero(function () {
     if (zonaCorrente == 4) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         eroe.setPosition(32 * 16, 32 * 16)
-        Narratore_4_ = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore_4)
-        Narratore_4_.setPosition(31 * 16, 31 * 16)
+        narratore_4 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore4)
+        narratore_4.setPosition(31 * 16, 31 * 16)
         info.setLife(10)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Guardia_Portale)
+        sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
         arrNemici = []
     } else {
         game.setGameOverMessage(false, "GAME OVER!")
@@ -831,7 +844,7 @@ screen2.fillRect(14, 24, 162, 1, 15)
             `, screen2, 14 + selectedIndex * 20 - 2, tool_top - 2)
     }
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Guardia_Portale, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.GuardiaPortale, function (sprite, otherSprite) {
     if (sprite == attaccoGhiaccio) {
         if (randint(1, 6) >= 3) {
             sprites.destroy(otherSprite, effects.disintegrate, 500)
@@ -848,23 +861,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Tel da castello a mappa gener
 scene.onOverlapTile(SpriteKind.Player, assets.tile`da strada nord a città`, function (sprite, location) {
     cambiaZona(6)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Nemico_potenziato, function (sprite, otherSprite) {
-    if (sprite == attaccoFuoco) {
-        vitaNemicoPotenziato += -1
-        if (vitaNemicoPotenziato <= 0) {
-            sprites.destroy(otherSprite, effects.ashes, 500)
-            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
-            sprites.destroy(Narratore_3_)
-        }
-    } else {
-        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
-    }
-    sprites.destroy(sprite)
-})
-// Game Over
-sprites.onOverlap(SpriteKind.Nemico_potenziato, SpriteKind.blocco, function (sprite, otherSprite) {
-    game.setGameOverMessage(false, "Il cristallo è stato rubato!")
-    game.gameOver(false)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NemicoPotenziato, function (sprite, otherSprite) {
+    info.changeLifeBy(-2)
+    music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
+    pause(1000)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     cambiaZona(6)
@@ -879,27 +879,27 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
             effects.blizzard.startScreenEffect(2000)
             tiles.setCurrentTilemap(tilemap`Villaggio`)
             z1Ripulita = true
-            Narratore_2 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore2)
-            Narratore_2.setPosition(eroe.x - 16, eroe.y - 17)
+            narratore_2 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore2)
+            narratore_2.setPosition(eroe.x - 16, eroe.y - 17)
             info.changeLifeBy(3)
         } else if (zonaCorrente == 5 && zona5SpawnCnt == 8) {
             eroe.sayText("Una porta si è aperta in questa area!", 5000, true)
             tiles.setTileAt(tiles.getTileLocation(25, 3), assets.tile`Portaaperta`)
             tiles.setWallAt(tiles.getTileLocation(25, 3), false)
-            Narratore_3_ = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore_3)
-            Narratore_3_.setPosition(27 * 16, 3 * 16)
+            narratore_3 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore3)
+            narratore_3.setPosition(27 * 16, 3 * 16)
         }
     }
 })
 // Cambio Zona
 function cambiaZona (zona: number) {
     sprites.destroy(eroe)
-    sprites.destroy(Narratore)
-    sprites.destroy(Narratore_2)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Guardia_Portale)
-    sprites.destroy(Narratore_3_)
-    sprites.destroy(Narratore_4_)
-    sprites.destroy(Narratore_5_)
+    sprites.destroy(narratore_1)
+    sprites.destroy(narratore_2)
+    sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
+    sprites.destroy(narratore_3)
+    sprites.destroy(narratore_4)
+    sprites.destroy(narratore_5)
     sprites.destroy(contadino1)
     eroe = sprites.create(assets.image`Eroe`, SpriteKind.Player)
     // scene.setBackgroundImage()
@@ -911,8 +911,8 @@ function cambiaZona (zona: number) {
         tiles.placeOnRandomTile(eroe, assets.tile`letto 1`)
         eroe.y += 32
         if (z1Ripulita == false) {
-            Narratore = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore1)
-            Narratore.setPosition(8 * 16, 18 * 16)
+            narratore_1 = sprites.create(assets.image`sptNarratore`, SpriteKind.Narratore1)
+            narratore_1.setPosition(8 * 16, 18 * 16)
         }
     } else if (zona == 1) {
         if (z1Ripulita == true) {
@@ -924,7 +924,7 @@ function cambiaZona (zona: number) {
         }
         tiles.placeOnRandomTile(eroe, assets.tile`Porta casa`)
         eroe.y += 16
-        sferaFuoco = sprites.create(assets.image`trasparente`, SpriteKind.blocco)
+        sferaFuoco = sprites.create(assets.image`trasparente`, SpriteKind.Blocco)
         sferaFuoco.setPosition(21 * 16, 5 * 16)
     } else if (zona == 2) {
         tiles.setCurrentTilemap(tilemap`Villaggio`)
@@ -991,11 +991,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite
     arrTools[2] = assets.image`Attacco di fuoco`
     arrToolsNames[2] = "Cristallo fuoco"
 })
-sprites.onDestroyed(SpriteKind.Nemico_potenziato, function (sprite) {
-    sferaDaPrendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
-    sferaDaPrendere.x = sprite.x
-    sferaDaPrendere.y = sprite.y
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
     music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
@@ -1003,6 +998,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
     cambiaZona(5)
+})
+// Game Over
+sprites.onOverlap(SpriteKind.NemicoPotenziato, SpriteKind.Blocco, function (sprite, otherSprite) {
+    game.setGameOverMessage(false, "Il cristallo è stato rubato!")
+    game.gameOver(false)
 })
 // Attacchi
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -1014,18 +1014,16 @@ let zona9SpawnCnt = 0
 let zona7SpawnCnt = 0
 let zona4SpawnCnt = 0
 let sferaFuoco: Sprite = null
-let Narratore: Sprite = null
-let Narratore_2: Sprite = null
+let narratore_1: Sprite = null
+let narratore_2: Sprite = null
 let zona5SpawnCnt = 0
 let zone1SpawnCnt = 0
-let Narratore_3_: Sprite = null
 let toolTop = 0
-let Narratore_5_: Sprite = null
-let Narratore_4_: Sprite = null
+let narratore_5: Sprite = null
+let narratore_4: Sprite = null
 let inventarioAperto = false
 let projectile: Sprite = null
 let contadinoDialogo2 = false
-let sferaDaPrendere: Sprite = null
 let p2QuestFallita = false
 let attaccoGhiaccio: Sprite = null
 let vy = 0
@@ -1033,15 +1031,17 @@ let vx = 0
 let contadino1: Sprite = null
 let zonaCorrente = 0
 let contadinoDialogo1 = false
-let vitaNemicoPotenziato = 0
 let p2Uscita: Sprite = null
 let nemicoPotenziato: Sprite = null
 let reginaCittà: Sprite = null
 let p2Quest = false
 let p2: Sprite = null
 let p1: Sprite = null
+let sferaDaPrendere: Sprite = null
 let direzioneColpo = 0
 let BANANNA = false
+let narratore_3: Sprite = null
+let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
 let arrToolsNames: string[] = []
 let arrTools: Image[] = []
@@ -1053,11 +1053,11 @@ let progressoCittà = 0
 let z1Ripulita = false
 let ghiaccio = false
 let fuoco = false
-let Narratore_5_spawn = false
+let spawnNarratore5 = false
 let cittàAperta = false
 let p2Regina = false
 cittàAperta = false
-Narratore_5_spawn = true
+spawnNarratore5 = true
 fuoco = false
 ghiaccio = true
 z1Ripulita = false
@@ -1165,12 +1165,12 @@ game.onUpdateInterval(4000, function () {
         tiles.placeOnRandomTile(arrNemici[0], assets.tile`Spawner nemici normali`)
         zona5SpawnCnt += 1
     } else if (zonaCorrente == 4 && zona4SpawnCnt < 6) {
-        arrNemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
+        arrNemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.GuardiaPortale)
         tiles.placeOnRandomTile(arrNemici[0], assets.tile`Spawn guardie portale`)
         arrNemici[0].follow(eroe, 65)
         zona4SpawnCnt += 1
     } else if (zonaCorrente == 7 && zona7SpawnCnt < 9) {
-        arrNemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.Guardia_Portale)
+        arrNemici[0] = sprites.create(assets.image`Miniboss in portale`, SpriteKind.GuardiaPortale)
         tiles.placeOnRandomTile(arrNemici[0], assets.tile`Spawn guardie portale`)
         arrNemici[0].follow(eroe, 40)
         zona7SpawnCnt += 1
