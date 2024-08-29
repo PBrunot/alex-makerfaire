@@ -1665,6 +1665,25 @@ cccccbcbdb3bdbd1111111111bccffc11dbcfccccccfcbbbbbbbb1111111cffccc11fccccccc3111
 cccbbcccbbddcd1dbd1d1111d111cb111dbcffccccccccccbbcbbb3111111dffcfc13cccfccccd1d111cfbdbffffcccbccccccccccfbcfccc1ddccccfccbbbccbcccbbcc33d3cbbc33b31bb1c3bcd11cccbbbbb1b3d11111111111dd3d33bbbdbb11bbcbccccccccccccccccccccccccccccccfcbccbd31d3dbdbccccccccccc
 ffcccccbccbbdddd1ddd1dd1c1ddb111dcfffffccfccccccccccccbb3d11111bfcfb1cccccccfb311111cfcddfcccbbbccbbcbbbbcfbcfccc1ddfccffccbbbcbbbccbbccbcc3ccbbbdbb1cbdcbb111ccccccbbbbbbd11111111111111111111d1dd1d3cbccccccccccccbcccccccccccccccccfcbbcbccbb3d3bbccccccccccc
 `;
+            case "}O$zU#WC$j?sn%[WUMq(":
+            case "imgAttaccoDestra":return img`
+. . . . . . . . . . . . 1 b . . 
+. . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . b 1 . 
+. . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . . b . . 
+. . . . . . . . . . . . 1 b . . 
+. . . . . . . . . . . . b . . . 
+. . . . . . . . . . . 1 b . . . 
+. . . . . . . . . . . b . . . . 
+. . . . . . . . . . b . . . . . 
+. . . . . . . . . b . . . . . . 
+. . . . . . . . b 1 . . . . . . 
+. . . . . 1 b b . . . . . . . . 
+b b b b b b . . . . . . . . . . 
+. 1 . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
         }
         return null;
     })
