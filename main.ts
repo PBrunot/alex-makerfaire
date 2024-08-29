@@ -55,7 +55,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherS
     }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (!(story.isMenuOpen())) {
+    if (!(story.isMenuOpen()) && introComplete) {
         direzioneColpo = 3
     }
 })
@@ -72,6 +72,72 @@ function spriteCittà () {
     reginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
     tiles.placeOnRandomTile(reginaCittà, assets.tile`spawnPersonaggio`)
 }
+function initVariabili () {
+    let selectedIndex = 0
+let arrToolsNames: string[] = []
+let arrTools: Image[] = []
+let toolTop = 0
+p2Regina = false
+    toolTop = 0
+    cittàAperta = false
+    spawnNarratore5 = true
+    fuoco = false
+    ghiaccio = false
+    z1Ripulita = false
+    progressoCittà = 0
+    p2Vita = 15
+    p2QuestVittoria = false
+    VitaBossFinale = 16
+    morteGuardie = 0
+    arrTools = [
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . b c 
+        . . . . . . . . . . . . . b e . 
+        . . . . . . . . . d d . b e . . 
+        . . . . . . . . . . d b b . . . 
+        . . . . . . . . . . d b b . . . 
+        . . . . . . . . . d e b . b . . 
+        . . . . . . . . d e b . . b . . 
+        . . . . . . . d e b . . . . . . 
+        . . . . . . d e b . . . . . . . 
+        . . . . . d e b . . . . . . . . 
+        . . . . d e b . . . . . . . . . 
+        . . . d e b . . . . . . . . . . 
+        . . d e b . . . . . . . . . . . 
+        . d b b . . . . . . . . . . . . 
+        . d d . . . . . . . . . . . . . 
+        `,
+    assets.image`Scudo fab`,
+    assets.image`vuotoTrasparente`,
+    assets.image`sferadaprendere`,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `
+    ]
+    arrToolsNames = [
+    "Spada",
+    "Scudo Fab",
+    "",
+    "",
+    ""
+    ]
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
@@ -82,29 +148,31 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (direzioneColpo == 1) {
-        vx = 110
-        vy = 0
-    } else if (direzioneColpo == 2) {
-        vx = -110
-        vy = 0
-    } else if (direzioneColpo == 4) {
-        vx = 0
-        vy = 110
-    } else if (direzioneColpo == 3) {
-        vx = 0
-        vy = -110
-    }
-    if (ghiaccio) {
-        attaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, eroe, vx, vy)
-        pause(1000)
-        sprites.destroy(attaccoGhiaccio)
-        pause(1000)
-    } else if (fuoco) {
-        attaccoFuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, eroe, vx, vy)
-        pause(1000)
-        sprites.destroy(attaccoFuoco)
-        pause(1000)
+    if (!(story.isMenuOpen()) && introComplete) {
+        if (direzioneColpo == 1) {
+            vx = 110
+            vy = 0
+        } else if (direzioneColpo == 2) {
+            vx = -110
+            vy = 0
+        } else if (direzioneColpo == 4) {
+            vx = 0
+            vy = 110
+        } else if (direzioneColpo == 3) {
+            vx = 0
+            vy = -110
+        }
+        if (ghiaccio) {
+            attaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, eroe, vx, vy)
+            pause(1000)
+            sprites.destroy(attaccoGhiaccio)
+            pause(1000)
+        } else if (fuoco) {
+            attaccoFuoco = sprites.createProjectileFromSprite(assets.image`Attacco di fuoco`, eroe, vx, vy)
+            pause(1000)
+            sprites.destroy(attaccoFuoco)
+            pause(1000)
+        }
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite35, location15) {
@@ -130,7 +198,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite,
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (!(story.isMenuOpen())) {
+    if (!(story.isMenuOpen()) && introComplete) {
         if (direzioneColpo == 1) {
             projectile = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . 1 b . . 
@@ -572,9 +640,10 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Personaggio2, function (sprite, o
     }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    controller.moveSprite(eroe)
-    direzioneColpo = 2
-    selectedIndex = Math.max(selectedIndex - 1, 0)
+    if (!(story.isMenuOpen()) && introComplete) {
+        direzioneColpo = 2
+        selectedIndex = Math.max(selectedIndex - 1, 0)
+    }
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sprite, location) {
     if (sprite == attaccoFuoco) {
@@ -618,8 +687,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore4, function (sprite, ot
 })
 // Attacchi
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    direzioneColpo = 1
-    selectedIndex = Math.min(selectedIndex + 1, arrTools.length - 1)
+    if (!(story.isMenuOpen()) && introComplete) {
+        direzioneColpo = 1
+        selectedIndex = Math.min(selectedIndex + 1, arrTools.length - 1)
+    }
 })
 // Game Over
 sprites.onOverlap(SpriteKind.NemicoPotenziato, SpriteKind.Blocco, function (sprite41, otherSprite21) {
@@ -697,7 +768,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore3, function (sprite20, 
     sprites.destroy(otherSprite13, effects.blizzard, 500)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (!(story.isMenuOpen())) {
+    if (!(story.isMenuOpen()) && introComplete) {
         direzioneColpo = 4
     }
 })
@@ -706,7 +777,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Da città a mondo generale`, 
     cambiaZona(3)
 })
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (inventarioAperto) {
+    if (!(story.isMenuOpen()) && (introComplete && inventarioAperto)) {
         closeinventory()
     } else {
         openinventory()
@@ -738,7 +809,7 @@ screen2.fillRect(14, 24, 132, 1, 15)
         toolTop = 28
         index = 0
         while (index <= arrTools.length - 1) {
-            spriteutils.drawTransparentImage(arrTools[index], screen2, 14 + index * 20, tool_top)
+            spriteutils.drawTransparentImage(arrTools[index], screen2, 14 + index * 20, toolTop)
 index += 1
         }
         spriteutils.drawTransparentImage(assets.image`
@@ -830,22 +901,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BossFinale, function (sprite25, 
 })
 // Cambio Zona
 function cambiaZona (zona: number) {
-    console.log("cambia Zona =" + zona)
-    spawnBossFinale = true
-    VitaBossFinale = 16
-    sprites.destroy(eroe)
-    sprites.destroy(narratore_1)
-    sprites.destroy(narratore_2)
-    sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-    arrNemici = []
-    sprites.destroy(narratore_3)
-    sprites.destroy(narratore_4)
-    sprites.destroy(narratore_5)
-    sprites.destroy(contadino1)
-    sprites.destroy(p1)
-    sprites.destroy(p2)
-    sprites.destroy(reginaCittà)
+    console.log("cambia Zona =" + zona + ",z1Ripulita=" + z1Ripulita)
+    destroyAllSprites()
     eroe = sprites.create(assets.image`Eroe`, SpriteKind.Player)
     // scene.setBackgroundImage()
     // spriteutils.moveTo(mySprite, spriteutils.pos(32 * 16, 32 * 16), 100, true)
@@ -860,17 +917,17 @@ function cambiaZona (zona: number) {
             narratore_1.setPosition(8 * 16, 18 * 16)
         }
     } else if (zona == 1) {
-        if (!(z1Ripulita)) {
+        if (z1Ripulita) {
             tiles.setCurrentTilemap(tilemap`Villaggio`)
             contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
             eroe.setPosition(5 * 16, 8 * 16)
         } else {
             tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+            tiles.placeOnRandomTile(eroe, assets.tile`Porta casa`)
+            eroe.y += 16
+            sferaFuoco = sprites.create(assets.image`sferadaprendere`, SpriteKind.Blocco)
+            sferaFuoco.setPosition(21 * 16, 5 * 16)
         }
-        tiles.placeOnRandomTile(eroe, assets.tile`Porta casa`)
-        eroe.y += 16
-        sferaFuoco = sprites.create(assets.image`sferadaprendere`, SpriteKind.Blocco)
-        sferaFuoco.setPosition(21 * 16, 5 * 16)
     } else if (zona == 2) {
         tiles.setCurrentTilemap(tilemap`Villaggio`)
         contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
@@ -981,6 +1038,21 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite38) {
         }
     }
 })
+function destroyAllSprites () {
+    sprites.destroy(eroe)
+    sprites.destroy(narratore_1)
+    sprites.destroy(narratore_2)
+    sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    arrNemici = []
+    sprites.destroy(narratore_3)
+    sprites.destroy(narratore_4)
+    sprites.destroy(narratore_5)
+    sprites.destroy(contadino1)
+    sprites.destroy(p1)
+    sprites.destroy(p2)
+    sprites.destroy(reginaCittà)
+}
 scene.onOverlapTile(SpriteKind.Personaggio2, assets.tile`Arrivo personaggio2`, function (sprite29, location11) {
     effects.smiles.startScreenEffect(500)
     pause(500)
@@ -1017,16 +1089,14 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`da strada nord a città`, fun
 let zona9SpawnCnt = 0
 let zona7SpawnCnt = 0
 let zona4SpawnCnt = 0
+let narratore_5: Sprite = null
+let narratore_2: Sprite = null
 let zona5SpawnCnt = 0
 let zone1SpawnCnt = 0
 let bossFinale: Sprite = null
 let sferaFuoco: Sprite = null
 let contadino1: Sprite = null
-let narratore_5: Sprite = null
-let narratore_2: Sprite = null
 let narratore_1: Sprite = null
-let VitaBossFinale = 0
-let spawnBossFinale = false
 let sferaDaPrendere: Sprite = null
 let arrNemici: Sprite[] = []
 let narratore_4: Sprite = null
@@ -1042,44 +1112,32 @@ let vy = 0
 let vx = 0
 let p2QuestUscita: Sprite = null
 let nemicoPotenziato: Sprite = null
+let morteGuardie = 0
+let VitaBossFinale = 0
+let p2QuestVittoria = false
+let p2Vita = 0
+let z1Ripulita = false
+let ghiaccio = false
+let fuoco = false
+let spawnNarratore5 = false
+let cittàAperta = false
+let p2Regina = false
 let reginaCittà: Sprite = null
 let p2Quest = false
 let p2: Sprite = null
 let p1: Sprite = null
 let direzioneColpo = 0
 let bacchetta = false
+let progressoCittà = 0
 let narratore_3: Sprite = null
 let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
-let morteGuardie = 0
-let p2QuestVittoria = false
-let p2Vita = 0
-let progressoCittà = 0
-let z1Ripulita = false
-let ghiaccio = false
-let fuoco = false
-let spawnNarratore5 = false
-let cittàAperta = false
-let tool_top = 0
-let p2Regina = false
-let toolTop = 0
-let arrTools: Image[] = []
-let arrToolsNames: string[] = []
-let selectedIndex = 0
-toolTop = 0
-cittàAperta = false
-spawnNarratore5 = true
-fuoco = false
-ghiaccio = true
-z1Ripulita = false
-progressoCittà = 0
-p2Vita = 15
-p2QuestVittoria = false
-morteGuardie = 0
+let introComplete = false
+initVariabili()
 scene.setBackgroundImage(assets.image`Copertina`)
 music.play(music.createSong(assets.song`invasion musica brutta`), music.PlaybackMode.UntilDone)
 scene.setBackgroundImage(assets.image`Inizio`)
-game.showLongText("... Cos'è questa puzza di fumo?", DialogLayout.Full)
+game.showLongText("... Cos'è questa puzza di fumo?", DialogLayout.Center)
 let spada = img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . b c 
@@ -1099,54 +1157,7 @@ let spada = img`
     . d d . . . . . . . . . . . . . 
     `
 info.setLife(10)
-arrTools = [
-img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . b c 
-    . . . . . . . . . . . . . b e . 
-    . . . . . . . . . d d . b e . . 
-    . . . . . . . . . . d b b . . . 
-    . . . . . . . . . . d b b . . . 
-    . . . . . . . . . d e b . b . . 
-    . . . . . . . . d e b . . b . . 
-    . . . . . . . d e b . . . . . . 
-    . . . . . . d e b . . . . . . . 
-    . . . . . d e b . . . . . . . . 
-    . . . . d e b . . . . . . . . . 
-    . . . d e b . . . . . . . . . . 
-    . . d e b . . . . . . . . . . . 
-    . d b b . . . . . . . . . . . . 
-    . d d . . . . . . . . . . . . . 
-    `,
-assets.image`Scudo fab`,
-assets.image`q`,
-assets.image`sferadaprendere`,
-img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `
-]
-arrToolsNames = [
-"Spada",
-"Scudo Fab",
-"",
-"",
-""
-]
+introComplete = true
 cambiaZona(0)
 // Game over
 game.onUpdateInterval(4000, function () {
