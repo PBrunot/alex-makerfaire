@@ -17,12 +17,6 @@ namespace SpriteKind {
     export const Regina = SpriteKind.create()
     export const Contadino = SpriteKind.create()
 }
-scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sprite16, location4) {
-    if (sprite16 == attaccoFuoco) {
-        tiles.setTileAt(location4, sprites.castle.tilePath5)
-    }
-    sprites.destroy(sprite16)
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.NemicoPotenziato, function (sprite, otherSprite) {
     if (sprite == attaccoFuoco) {
         vitaNemicoPotenziato += -1
@@ -36,39 +30,34 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.NemicoPotenziato, function (
     }
     sprites.destroy(sprite)
 })
-// Narratore
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore4, function (sprite21, otherSprite14) {
-    game.showLongText("Non sei ancora pronto per affrontare l'Invasione", DialogLayout.Bottom)
-    game.showLongText("Nella città si dice che vi sia nascosta una bacchetta,", DialogLayout.Bottom)
-    game.showLongText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", DialogLayout.Bottom)
-    game.showLongText("Cosa aspetti, presto,valla a cercare!", DialogLayout.Bottom)
-    cittàAperta = true
-    sprites.destroy(otherSprite14, effects.blizzard, 500)
+// Villaggio
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherSprite) {
+    if (progressoCittà == 2) {
+        if (bacchetta == false) {
+            story.spriteSayText(otherSprite, "Ho saputo che hai aiutato la mia gente... ")
+            story.spriteSayText(otherSprite, "...perciò ti darò la possibilità di ottenere la bacchetta.")
+            story.spriteSayText(otherSprite, "Ma non credere che sia facile...")
+            story.spriteSayText(otherSprite, "per ottenere la bacchetta dovrai risolvere un'ENIGMA!")
+            story.spriteSayText(otherSprite, "Trova il messaggio nascosto nell'immagine per ottenere la bacchetta")
+            story.showPlayerChoices("Apriti sesamo", "Abracadabra", "Mostrati", "Rivelati", "Sottomettiti")
+            if (story.getLastAnswer() == "Rivelati") {
+                story.spriteSayText(otherSprite, "Bravo, la risposta è corretta")
+                story.spriteSayText(otherSprite, "Ecco a te la bacchetta, te la sei meritata")
+                story.spriteSayText(otherSprite, "Aumenterà il danno provocato e la velocità degli attacchi")
+                progressoCittà += 1
+                bacchetta = true
+            }
+        }
+    } else if (progressoCittà == 3) {
+        story.spriteSayText(otherSprite, "Vai a fermare l'Invasione!")
+    } else {
+        story.spriteSayText(otherSprite, "Sparisci della mia vista, plebeo!")
+    }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(story.isMenuOpen())) {
         direzioneColpo = 3
     }
-})
-// Narratore
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite18, otherSprite12) {
-    game.showLongText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", DialogLayout.Top)
-    game.showLongText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", DialogLayout.Top)
-    sprites.destroy(otherSprite12, effects.blizzard, 500)
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite8, location2) {
-    tiles.setTileAt(location2, sprites.dungeon.floorLight2)
-    nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
-    nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    p2QuestUscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
-    p2QuestUscita.setPosition(20 * 16, 37 * 16)
-    nemicoPotenziato.follow(p2QuestUscita, 20)
-    vitaNemicoPotenziato = 5
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite39, otherSprite20) {
-    sprites.destroy(otherSprite20, effects.trail, 500)
-    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
-    sprites.destroy(sprite39)
 })
 function spriteCittà () {
     p1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
@@ -83,6 +72,15 @@ function spriteCittà () {
     reginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
     tiles.placeOnRandomTile(reginaCittà, assets.tile`spawnPersonaggio`)
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
+    tiles.setTileAt(location, sprites.dungeon.floorLight2)
+    nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
+    nemicoPotenziato.setPosition(21 * 16, 4 * 16)
+    p2QuestUscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
+    p2QuestUscita.setPosition(20 * 16, 37 * 16)
+    nemicoPotenziato.follow(p2QuestUscita, 20)
+    vitaNemicoPotenziato = 5
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (direzioneColpo == 1) {
         vx = 110
@@ -117,54 +115,16 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.GuardiaPortale, function (sprite
     music.play(music.melodyPlayable(music.zapped), music.PlaybackMode.InBackground)
     pause(2000)
 })
-// Villaggio
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite2, otherSprite2) {
-    if (progressoCittà == 2) {
-        if (bacchetta == false) {
-            story.spriteSayText(otherSprite2, "Ho saputo che hai aiutato la mia gente... ")
-            story.spriteSayText(otherSprite2, "...perciò ti darò la possibilità di ottenere la bacchetta.")
-            story.spriteSayText(otherSprite2, "Ma non credere che sia facile...")
-            story.spriteSayText(otherSprite2, "per ottenere la bacchetta dovrai risolvere un'ENIGMA!")
-            story.spriteSayText(otherSprite2, "Trova il messaggio nascosto nell'immagine per ottenere la bacchetta")
-            story.showPlayerChoices("Apriti sesamo", "Abracadabra", "Mostrati", "Rivelati", "Sottomettiti")
-            if (story.getLastAnswer() == "Rivelati") {
-                story.spriteSayText(sprite2, "Bravo, la risposta è corretta")
-                story.spriteSayText(otherSprite2, "Ecco a te la bacchetta, te la sei meritata")
-                story.spriteSayText(otherSprite2, "Aumenterà il danno provocato e la velocità degli attacchi")
-                progressoCittà += 1
-                bacchetta = true
-            }
-        }
-    } else if (progressoCittà == 3) {
-        story.spriteSayText(otherSprite2, "Vai a fermare l'Invasione!")
-    } else {
-        story.spriteSayText(otherSprite2, "Sparisci della mia vista, plebeo!")
-    }
-})
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Personaggio2, function (sprite15, otherSprite11) {
-    p2Vita += -1
-    pause(2000)
-    if (p2Vita == 0) {
-        tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
-        tiles.placeOnRandomTile(eroe, assets.tile`Spawn aiutante quest`)
-        tiles.placeOnRandomTile(otherSprite11, assets.tile`Spawn aiutante quest`)
-        p2QuestFallita = true
-        p2Vita = 15
-    }
-})
-scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite40, location17) {
-    cambiaZona(5)
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite12, otherSprite8) {
-    if (sprite12 == attaccoGhiaccio) {
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Contadino, function (sprite, otherSprite) {
+    if (sprite == attaccoGhiaccio) {
         if (contadinoDialogo1 && !(BANANNA)) {
-            sprites.destroy(sprite12, effects.spray, 500)
-            story.spriteSayText(otherSprite8, "Ah, ci voleva proprio una bella rinfrescata", 15, 1, story.TextSpeed.Normal)
-            story.spriteSayText(otherSprite8, "Ecco a te le banane, come promesso!", 15, 1, story.TextSpeed.Normal)
+            sprites.destroy(sprite, effects.spray, 500)
+            story.spriteSayText(otherSprite, "Ah, ci voleva proprio una bella rinfrescata", 15, 1, story.TextSpeed.Normal)
+            story.spriteSayText(otherSprite, "Ecco a te le banane, come promesso!", 15, 1, story.TextSpeed.Normal)
             BANANNA = true
         } else {
-            story.spriteSayText(otherSprite8, "Ah, ci voleva proprio una bella rinfrescata", 15, 1, story.TextSpeed.Normal)
-            story.spriteSayText(otherSprite8, "Prendi delle banane, come ringraziamento", 15, 1, story.TextSpeed.Normal)
+            story.spriteSayText(otherSprite, "Ah, ci voleva proprio una bella rinfrescata", 15, 1, story.TextSpeed.Normal)
+            story.spriteSayText(otherSprite, "Prendi delle banane, come ringraziamento", 15, 1, story.TextSpeed.Normal)
             BANANNA = true
         }
     }
@@ -597,48 +557,30 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         pause(500)
     }
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite23, otherSprite15) {
-    if (BANANNA) {
-        story.spriteSayText(otherSprite15, "Grazie mille amico", 15, 1, story.TextSpeed.Normal)
-    } else if (progressoCittà == 0) {
-        if (!(contadinoDialogo1)) {
-            story.spriteSayText(otherSprite15, "Ehi, la faresti una cosa per me?", 15, 1, story.TextSpeed.Normal)
-            story.spriteSayText(otherSprite15, "Se mi aiuterai ti darò un casco di banane (anche se non è molto)")
-            controller.moveSprite(sprite23, 0, 0)
-            story.showPlayerChoices("Accettare", "Rifiutare")
-            controller.moveSprite(sprite23, 100, 100)
-            if (story.getLastAnswer() == "Accettare") {
-                story.spriteSayText(otherSprite15, "Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato!")
-                contadinoDialogo1 = true
-            } else {
-                story.spriteSayText(otherSprite15, "Va bene, sarà per la prossima volta...")
-            }
-        }
-    }
-})
 function closeinventory () {
     inventarioAperto = false
-    controller.moveSprite(eroe)
 }
-// Cambio mondo
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Da città a mondo generale`, function (sprite28, location10) {
-    cambiaZona(3)
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Personaggio2, function (sprite, otherSprite) {
+    p2Vita += -1
+    pause(2000)
+    if (p2Vita == 0) {
+        tiles.setCurrentTilemap(tilemap`tileMapTrieste`)
+        tiles.placeOnRandomTile(eroe, assets.tile`Spawn aiutante quest`)
+        tiles.placeOnRandomTile(otherSprite, assets.tile`Spawn aiutante quest`)
+        p2QuestFallita = true
+        p2Vita = 15
+    }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     controller.moveSprite(eroe)
     direzioneColpo = 2
     selectedIndex = Math.max(selectedIndex - 1, 0)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.GuardiaPortale, function (sprite30, otherSprite18) {
-    if (sprite30 == attaccoGhiaccio) {
-        if (randint(1, 6) >= 3) {
-            sprites.destroy(otherSprite18, effects.disintegrate, 500)
-            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
-        }
-    } else {
-        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
+scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_1`, function (sprite, location) {
+    if (sprite == attaccoFuoco) {
+        tiles.setTileAt(location, sprites.castle.tilePath5)
     }
-    sprites.destroy(sprite30)
+    sprites.destroy(sprite)
 })
 // Attacchi
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite42, otherSprite22) {
@@ -648,6 +590,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite42, other
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite27, location9) {
     cambiaZona(2)
+})
+// Narratore
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore1, function (sprite, otherSprite) {
+    game.showLongText("I mostri ci stanno attaccando! Proteggi il cristallo, presto!", DialogLayout.Top)
+    game.showLongText("Per attaccare premi \"A\" muovendoti nella direzione nella quale vuoi che vada il colpo", DialogLayout.Top)
+    sprites.destroy(otherSprite, effects.blizzard, 500)
 })
 // Game Over
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Blocco, function (sprite13, otherSprite9) {
@@ -659,6 +607,15 @@ function openinventory () {
     controller.moveSprite(eroe, 0, 0)
     selectedIndex = 0
 }
+// Narratore
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore4, function (sprite, otherSprite) {
+    game.showLongText("Non sei ancora pronto per affrontare l'Invasione", DialogLayout.Bottom)
+    game.showLongText("Nella città si dice che vi sia nascosta una bacchetta,", DialogLayout.Bottom)
+    game.showLongText("Potrebbe canalizzare il potere del cristallo e renderti più potente!", DialogLayout.Bottom)
+    game.showLongText("Cosa aspetti, presto,valla a cercare!", DialogLayout.Bottom)
+    cittàAperta = true
+    sprites.destroy(otherSprite, effects.blizzard, 500)
+})
 // Attacchi
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     direzioneColpo = 1
@@ -697,6 +654,25 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio1, function (sprite4,
         story.spriteSayText(otherSprite3, "Gnam")
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Contadino, function (sprite, otherSprite) {
+    if (BANANNA) {
+        story.spriteSayText(otherSprite, "Grazie mille amico", 15, 1, story.TextSpeed.Normal)
+    } else if (progressoCittà == 0) {
+        if (!(contadinoDialogo1)) {
+            story.spriteSayText(otherSprite, "Ehi, la faresti una cosa per me?", 15, 1, story.TextSpeed.Normal)
+            story.spriteSayText(otherSprite, "Se mi aiuterai ti darò un casco di banane (anche se non è molto)")
+            controller.moveSprite(sprite, 0, 0)
+            story.showPlayerChoices("Accettare", "Rifiutare")
+            controller.moveSprite(sprite, 100, 100)
+            if (story.getLastAnswer() == "Accettare") {
+                story.spriteSayText(otherSprite, "Fa un caldo di questi giorni, se potessi rinfrescarmi un po' te ne sarei grato!")
+                contadinoDialogo1 = true
+            } else {
+                story.spriteSayText(otherSprite, "Va bene, sarà per la prossima volta...")
+            }
+        }
+    }
+})
 // Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore5, function (sprite5, otherSprite4) {
     game.showLongText("Il tuo prossimo obiettivo è il castello", DialogLayout.Bottom)
@@ -725,6 +701,10 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         direzioneColpo = 4
     }
 })
+// Cambio mondo
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Da città a mondo generale`, function (sprite, location) {
+    cambiaZona(3)
+})
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     if (inventarioAperto) {
         closeinventory()
@@ -748,7 +728,34 @@ info.onLifeZero(function () {
 })
 // Inventario
 spriteutils.createRenderable(100, function (screen2) {
-	
+    let index: number;
+if (inventarioAperto) {
+        screen2.fillRect(10, 10, 170, 100, 4)
+        screen2.drawRect(10, 10, 170, 100, 14)
+        screen2.print("INVENTARIO", 14, 14, 15)
+screen2.print(arrToolsNames[selectedIndex], 80, 14, 0)
+screen2.fillRect(14, 24, 132, 1, 15)
+        toolTop = 28
+        index = 0
+        while (index <= arrTools.length - 1) {
+            spriteutils.drawTransparentImage(arrTools[index], screen2, 14 + index * 20, tool_top)
+index += 1
+        }
+        spriteutils.drawTransparentImage(assets.image`
+                trasparente
+            `, screen2, 14 + selectedIndex * 20 - 2, toolTop - 2)
+    }
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.GuardiaPortale, function (sprite, otherSprite) {
+    if (sprite == attaccoGhiaccio) {
+        if (randint(1, 6) >= 3) {
+            sprites.destroy(otherSprite, effects.disintegrate, 500)
+            music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+        }
+    } else {
+        music.play(music.melodyPlayable(music.thump), music.PlaybackMode.InBackground)
+    }
+    sprites.destroy(sprite)
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio2, function (sprite9, otherSprite6) {
@@ -821,11 +828,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BossFinale, function (sprite25, 
     music.play(music.melodyPlayable(music.bigCrash), music.PlaybackMode.InBackground)
     pause(1000)
 })
-function on_pause_until () {
-    true
-}
 // Cambio Zona
 function cambiaZona (zona: number) {
+    console.log("cambia Zona =" + zona)
     spawnBossFinale = true
     VitaBossFinale = 16
     sprites.destroy(eroe)
@@ -880,6 +885,10 @@ function cambiaZona (zona: number) {
         }
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
+        if (ghiaccio) {
+            tiles.setWallAt(tiles.getTileLocation(32, 38), false)
+            tiles.setWallAt(tiles.getTileLocation(33, 38), false)
+        }
         if (zonaCorrente == 7) {
             tiles.placeOnRandomTile(eroe, assets.tile`Blocco teletrasporto portale`)
         } else {
@@ -946,6 +955,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Boss finale blocco`, function
     tiles.setTileAt(tiles.getTileLocation(19, 19), sprites.dungeon.doorClosedNorth)
     tiles.setWallAt(tiles.getTileLocation(19, 19), true)
     tiles.setTileAt(tiles.getTileLocation(19, 7), assets.tile`Spawn boss finale`)
+    bossFinale = sprites.create(assets.image`Boss finale`, SpriteKind.BossFinale)
+    tiles.placeOnRandomTile(bossFinale, assets.tile`Spawn boss finale`)
+    story.printDialog("NON HAI SPERANZE RAGAZZINO", 80, 90, 50, 150, 10, 15)
+    story.printDialog("HO MIGLIAIA DI ANNI PIÙ DI TE...", 80, 90, 50, 150, 10, 15)
+    story.printDialog("...E SONO MIGLIAIA DI VOLTE PIÙ FORTE DI TE!!!", 80, 90, 50, 150, 10, 15, story.TextSpeed.Fast)
+    bossFinale.follow(eroe, 10)
 })
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite38) {
     arrNemici.removeAt(arrNemici.indexOf(sprite38))
@@ -974,6 +989,11 @@ scene.onOverlapTile(SpriteKind.Personaggio2, assets.tile`Arrivo personaggio2`, f
     tiles.placeOnRandomTile(eroe, assets.tile`Spawn aiutante quest`)
     tiles.placeOnRandomTile(p2, assets.tile`Spawn aiutante quest`)
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.trail, 500)
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.InBackground)
+    sprites.destroy(sprite)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function (sprite24, location8) {
     cambiaZona(3)
     if (spawnNarratore5) {
@@ -981,6 +1001,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tel mappa centrale`, function
         narratore_5.setPosition(eroe.x + 10, eroe.y + 10)
         spawnNarratore5 = false
     }
+})
+// cambiaZona(5)
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
+	
 })
 sprites.onDestroyed(SpriteKind.NemicoPotenziato, function (sprite6) {
     sferaDaPrendere = sprites.create(assets.image`Attacco di ghiaccio`, SpriteKind.CristalloGhiaccio)
@@ -990,12 +1014,12 @@ sprites.onDestroyed(SpriteKind.NemicoPotenziato, function (sprite6) {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`da strada nord a città`, function (sprite32, location13) {
     cambiaZona(6)
 })
-let bossFinale: Sprite = null
 let zona9SpawnCnt = 0
 let zona7SpawnCnt = 0
 let zona4SpawnCnt = 0
 let zona5SpawnCnt = 0
 let zone1SpawnCnt = 0
+let bossFinale: Sprite = null
 let sferaFuoco: Sprite = null
 let contadino1: Sprite = null
 let narratore_5: Sprite = null
@@ -1007,29 +1031,26 @@ let sferaDaPrendere: Sprite = null
 let arrNemici: Sprite[] = []
 let narratore_4: Sprite = null
 let zonaCorrente = 0
-let selectedIndex = 0
+let p2QuestFallita = false
 let inventarioAperto = false
 let projectile: Sprite = null
 let BANANNA = false
 let contadinoDialogo1 = false
-let p2QuestFallita = false
-let bacchetta = false
 let eroe: Sprite = null
 let attaccoGhiaccio: Sprite = null
 let vy = 0
 let vx = 0
+let p2QuestUscita: Sprite = null
+let nemicoPotenziato: Sprite = null
 let reginaCittà: Sprite = null
 let p2Quest = false
 let p2: Sprite = null
 let p1: Sprite = null
-let p2QuestUscita: Sprite = null
-let nemicoPotenziato: Sprite = null
 let direzioneColpo = 0
+let bacchetta = false
 let narratore_3: Sprite = null
 let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
-let arrToolsNames: string[] = []
-let arrTools: Image[] = []
 let morteGuardie = 0
 let p2QuestVittoria = false
 let p2Vita = 0
@@ -1039,9 +1060,13 @@ let ghiaccio = false
 let fuoco = false
 let spawnNarratore5 = false
 let cittàAperta = false
+let tool_top = 0
 let p2Regina = false
 let toolTop = 0
-let tool_top = 0
+let arrTools: Image[] = []
+let arrToolsNames: string[] = []
+let selectedIndex = 0
+toolTop = 0
 cittàAperta = false
 spawnNarratore5 = true
 fuoco = false
@@ -1125,6 +1150,7 @@ arrToolsNames = [
 cambiaZona(0)
 // Game over
 game.onUpdateInterval(4000, function () {
+    console.log("Game update")
     if (zonaCorrente == 1 && zone1SpawnCnt < 6) {
         arrNemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
         if (randint(0, 10) < 6) {
@@ -1155,20 +1181,8 @@ game.onUpdateInterval(4000, function () {
         tiles.placeOnRandomTile(arrNemici[0], assets.tile`Spawner nemici normali`)
         zona9SpawnCnt += 1
     }
-    if (ghiaccio) {
-        tiles.setWallAt(tiles.getTileLocation(32, 38), false)
-        tiles.setWallAt(tiles.getTileLocation(33, 38), false)
-    }
-    if (cittàAperta) {
+    if (zonaCorrente == 3 && cittàAperta) {
         tiles.setWallAt(tiles.getTileLocation(38, 32), false)
         tiles.setWallAt(tiles.getTileLocation(38, 33), false)
-    }
-    if (spawnBossFinale) {
-        bossFinale = sprites.create(assets.image`Boss finale`, SpriteKind.BossFinale)
-        tiles.placeOnRandomTile(bossFinale, assets.tile`Spawn boss finale`)
-        story.printDialog("NON HAI SPERANZE RAGAZZINO", 80, 90, 50, 150, 10, 15)
-        story.printDialog("HO MIGLIAIA DI ANNI PIÙ DI TE...", 80, 90, 50, 150, 10, 15)
-        story.printDialog("...E SONO MIGLIAIA DI VOLTE PIÙ FORTE DI TE!!!", 80, 90, 50, 150, 10, 15, story.TextSpeed.Fast)
-        bossFinale.follow(eroe, 10)
     }
 })
