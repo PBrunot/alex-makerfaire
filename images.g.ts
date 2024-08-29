@@ -1684,6 +1684,25 @@ b b b b b b . . . . . . . . . .
 . 1 . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `;
+            case "image25":
+            case "proiettileBossFinale":return img`
+. . . . . . . . . . . . . . . . 
+. . . . . . a a a a . . . . . . 
+. . . . a a a b b a a a . . . . 
+. . . b b b b a a a a a a . . . 
+. . f b b b b c c c f f a a . . 
+. . b b b b b c c c f f b a . . 
+. a b b b b c c c c c b b a a . 
+. a b b b c c c a a a a b a a . 
+. a a b b c c a a a a a a a a . 
+. a f b b c c a a a a a a a a . 
+. . a c b b c a a a a a c a . . 
+. . a c c b c c a a a c a a . . 
+. . . a c c c c c c c c a . . . 
+. . . . a a c c c c a a . . . . 
+. . . . . . a a a a . . . . . . 
+. . . . . . . . . . . . . . . . 
+`;
         }
         return null;
     })
