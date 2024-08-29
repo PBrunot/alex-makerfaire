@@ -33,14 +33,25 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.NemicoPotenziato, function (
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Regina, function (sprite, otherSprite) {
     if (progressoCittà == 2) {
-        if (true) {
-            story.spriteSayText(otherSprite, "Risolvi l'enigma", 15)
-        } else {
-            story.spriteSayText(otherSprite, "Ecco a te la bacchetta", 15)
-            progressoCittà += 1
+        if (bacchetta == false) {
+            story.spriteSayText(otherSprite, "Ho saputo che hai aiutato la mia gente... ")
+            story.spriteSayText(otherSprite, "...perciò ti darò la possibilità di ottenere la bacchetta.")
+            story.spriteSayText(otherSprite, "Ma non credere che sia facile...")
+            story.spriteSayText(otherSprite, "per ottenere la bacchetta dovrai risolvere un'ENIGMA!")
+            story.spriteSayText(otherSprite, "Trova il messaggio nascosto nell'immagine per ottenere la bacchetta")
+            story.showPlayerChoices("Apriti sesamo", "Abracadabra", "Mostrati", "Rivelati", "Sottomettiti")
+            if (story.getLastAnswer() == "Rivelati") {
+                story.spriteSayText(sprite, "Bravo, la risposta è corretta")
+                story.spriteSayText(otherSprite, "Ecco a te la bacchetta, te la sei meritata")
+                story.spriteSayText(otherSprite, "Aumenterà il danno provocato e la velocità degli attacchi")
+                progressoCittà += 1
+                bacchetta = true
+            }
         }
+    } else if (progressoCittà == 3) {
+        story.spriteSayText(otherSprite, "Vai a fermare l'Invasione!")
     } else {
-        story.spriteSayText(otherSprite, "Sparisci della mia vista, plebeo!", 15)
+        story.spriteSayText(otherSprite, "Sparisci della mia vista, plebeo!")
     }
 })
 scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sprite, location) {
@@ -53,13 +64,13 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sp
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Personaggio1, function (sprite, otherSprite) {
     if (progressoCittà == 0) {
         if (BANANNA == false) {
-            story.spriteSayText(otherSprite, "Portami una banana!", 15)
+            story.spriteSayText(otherSprite, "Portami una banana!")
         } else if (BANANNA == true) {
-            story.spriteSayText(otherSprite, "Grazie per la banana!", 15)
+            story.spriteSayText(otherSprite, "Grazie per la banana!")
             progressoCittà = 1
         }
     } else {
-        story.spriteSayText(otherSprite, "Gnam", 15, 1, story.TextSpeed.VeryFast)
+        story.spriteSayText(otherSprite, "Gnam")
     }
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -971,10 +982,12 @@ function cambiaZona (zona: number) {
 }
 // Combattimento
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite, otherSprite) {
-    fuoco = true
-    tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
-    arrTools[2] = assets.image`Attacco di fuoco`
-    arrToolsNames[2] = "Cristallo fuoco"
+    if (zonaCorrente == 1) {
+        fuoco = true
+        tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
+        arrTools[2] = assets.image`Attacco di fuoco`
+        arrToolsNames[2] = "Cristallo fuoco"
+    }
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.trail, 500)
@@ -1024,6 +1037,7 @@ let p1: Sprite = null
 let sferaDaPrendere: Sprite = null
 let direzioneColpo = 0
 let BANANNA = false
+let bacchetta = false
 let narratore_3: Sprite = null
 let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
