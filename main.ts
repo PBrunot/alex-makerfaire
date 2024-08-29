@@ -956,6 +956,9 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Tilemap morte`)
         tiles.placeOnRandomTile(eroe, assets.tile`myTile35`)
     } else if (zona == 5) {
+        if (zonaCorrente == 0) {
+            testGioco()
+        }
         tiles.setCurrentTilemap(tilemap`Castello`)
         music.play(music.createSong(assets.song`Musica castello`), music.PlaybackMode.LoopingInBackground)
         tiles.placeOnRandomTile(eroe, assets.tile`Tel da castello a mappa generale`)
@@ -1008,6 +1011,11 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sp
     }
     sprites.destroy(sprite3)
 })
+function testGioco () {
+    ghiaccio = true
+    BANANNA = true
+    cittàAperta = true
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Boss finale blocco`, function (sprite34, location14) {
     tiles.setTileAt(tiles.getTileLocation(19, 19), sprites.dungeon.doorClosedNorth)
     tiles.setWallAt(tiles.getTileLocation(19, 19), true)
