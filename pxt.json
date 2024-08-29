@@ -20,7 +20,8 @@
         "tilemap.g.ts",
         "images.g.jres",
         "images.g.ts",
-        "custom.ts"
+        "custom.ts",
+        "main.py"
     ],
     "testFiles": [
         "test.ts"
