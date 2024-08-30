@@ -1157,6 +1157,8 @@ let vy = 0
 let vx = 0
 let p2QuestUscita: Sprite = null
 let nemicoPotenziato: Sprite = null
+let arrToolsNames: string[] = []
+let arrTools: Image[] = []
 let morteGuardie = 0
 let VitaBossFinale = 0
 let p2QuestVittoria = false
@@ -1167,6 +1169,8 @@ let fuoco = false
 let spawnNarratore5 = false
 let cittàAperta = false
 let p2Regina = false
+let toolTop = 0
+let selectedIndex = 0
 let reginaCittà: Sprite = null
 let p2Quest = false
 let p2: Sprite = null
@@ -1179,10 +1183,6 @@ let narratore_3: Sprite = null
 let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
 let introComplete = false
-let arrTools: Image[] = []
-let arrToolsNames: string[] = []
-let selectedIndex = 0
-let toolTop = 0
 initVariabili()
 scene.setBackgroundImage(assets.image`Copertina`)
 music.play(music.createSong(assets.song`invasion musica brutta`), music.PlaybackMode.UntilDone)
