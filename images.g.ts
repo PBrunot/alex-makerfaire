@@ -1722,6 +1722,25 @@ c 3 e c . . . . . . . . . . . .
 b b . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `;
+            case "image27":
+            case "myImage0":return img`
+1 1 1 1 1 1 f f f f 1 1 1 1 1 1 
+1 1 1 1 f f f 2 2 f f f 1 1 1 1 
+1 1 1 f f f 2 2 2 2 f f f 1 1 1 
+1 1 f f f e e e e e e f f f 1 1 
+1 1 f f e 2 2 2 2 2 2 e e f 1 1 
+1 1 f e 2 f f f f f f 2 e f 1 1 
+1 1 f f f f e e e e f f f f 1 1 
+1 f f e f b f 4 4 f b f e f f 1 
+1 f e e 4 1 f d d f 1 4 e e f 1 
+1 1 f e e d d d d d d e e f 1 1 
+1 1 1 f e e 4 4 4 4 e e f 1 1 1 
+1 1 e 4 f 2 2 2 2 2 2 f 4 e 1 1 
+1 1 4 d f 2 2 2 2 2 2 f d 4 1 1 
+1 1 4 4 f 4 4 5 5 4 4 f 4 4 1 1 
+1 1 1 1 1 f f f f f f 1 1 1 1 1 
+1 1 1 1 1 f f 1 1 f f 1 1 1 1 1 
+`;
         }
         return null;
     })

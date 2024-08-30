@@ -127,9 +127,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
     nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    p2QuestUscita = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
-    p2QuestUscita.setPosition(20 * 16, 37 * 16)
-    nemicoPotenziato.follow(p2QuestUscita, 20)
+    Uscitacastello = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
+    Uscitacastello.setPosition(20 * 16, 36 * 16)
+    nemicoPotenziato.follow(Uscitacastello, 20)
     vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -877,6 +877,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite
     tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
     arrTools[2] = assets.image`Attacco di fuoco`
     arrToolsNames[2] = "Cristallo fuoco"
+    sprites.destroy(otherSprite5)
 })
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite11, otherSprite7) {
@@ -919,7 +920,7 @@ function cambiaZona (zona: number) {
             music.play(music.createSong(hex`00780004080200`), music.PlaybackMode.LoopingInBackground)
             tiles.setCurrentTilemap(tilemap`Villaggio`)
             contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
-            eroe.setPosition(5 * 16, 8 * 16)
+            contadino1.setPosition(5 * 16, 8 * 16)
         } else {
             tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
             music.play(music.createSong(assets.song`VIllaggio attacco mostri`), music.PlaybackMode.InBackground)
@@ -947,12 +948,22 @@ function cambiaZona (zona: number) {
             tiles.setWallAt(tiles.getTileLocation(32, 38), false)
             tiles.setWallAt(tiles.getTileLocation(33, 38), false)
         }
+        if (cittàAperta) {
+            tiles.setWallAt(tiles.getTileLocation(38, 32), false)
+            tiles.setWallAt(tiles.getTileLocation(38, 33), false)
+        }
+        if (bacchetta) {
+            tiles.setTileAt(tiles.getTileLocation(31, 48), assets.tile`Blocco teletrasporto portale`)
+        }
         if (zonaCorrente == 7) {
             tiles.placeOnRandomTile(eroe, assets.tile`Blocco teletrasporto portale`)
+            eroe.y += 32
+        } else if (zonaCorrente == 5) {
+            tiles.placeOnRandomTile(eroe, sprites.dungeon.collectibleInsignia)
         } else {
             tiles.placeOnRandomTile(eroe, assets.tile`myTile2`)
+            eroe.y += 32
         }
-        eroe.y += 32
     } else if (zona == 4) {
         tiles.setCurrentTilemap(tilemap`Tilemap morte`)
         tiles.placeOnRandomTile(eroe, assets.tile`myTile35`)
@@ -980,6 +991,17 @@ function cambiaZona (zona: number) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         tiles.placeOnRandomTile(eroe, sprites.dungeon.collectibleInsignia)
         eroe.y += 32
+        if (ghiaccio) {
+            tiles.setWallAt(tiles.getTileLocation(32, 38), false)
+            tiles.setWallAt(tiles.getTileLocation(33, 38), false)
+        }
+        if (cittàAperta) {
+            tiles.setWallAt(tiles.getTileLocation(38, 32), false)
+            tiles.setWallAt(tiles.getTileLocation(38, 33), false)
+        }
+        if (bacchetta) {
+            tiles.setTileAt(tiles.getTileLocation(31, 48), assets.tile`Blocco teletrasporto portale`)
+        }
     } else if (zona == 9) {
         tiles.setCurrentTilemap(tilemap`Strada settentrionale`)
         tiles.placeOnRandomTile(eroe, assets.tile`da strada nord a città`)
@@ -1138,7 +1160,7 @@ let attaccoGhiaccio: Sprite = null
 let spariMultipli: Sprite[] = []
 let vy = 0
 let vx = 0
-let p2QuestUscita: Sprite = null
+let Uscitacastello: Sprite = null
 let nemicoPotenziato: Sprite = null
 let arrToolsNames: string[] = []
 let arrTools: Image[] = []
@@ -1167,6 +1189,15 @@ let vitaNemicoPotenziato = 0
 let attaccoFuoco: Sprite = null
 let introComplete = false
 initVariabili()
+MakeyMakey.setSimulatorKeymap(
+MakeyMakey.PlayerNumber.ONE,
+MakeyMakey.MakeyMakeyKey.UP,
+MakeyMakey.MakeyMakeyKey.DOWN,
+MakeyMakey.MakeyMakeyKey.LEFT,
+MakeyMakey.MakeyMakeyKey.RIGHT,
+MakeyMakey.MakeyMakeyKey.SPACE,
+MakeyMakey.MakeyMakeyKey.LEFT_CLICK
+)
 scene.setBackgroundImage(assets.image`Copertina`)
 music.play(music.createSong(assets.song`invasion musica brutta`), music.PlaybackMode.UntilDone)
 scene.setBackgroundImage(assets.image`Inizio`)
@@ -1215,11 +1246,8 @@ game.onUpdateInterval(4000, function () {
     }
 })
 game.onUpdateInterval(100, function () {
-    if (zonaCorrente == 3 && cittàAperta) {
+    if (cittàAperta) {
         tiles.setWallAt(tiles.getTileLocation(38, 32), false)
         tiles.setWallAt(tiles.getTileLocation(38, 33), false)
-    }
-    if (bacchetta) {
-        tiles.setTileAt(tiles.getTileLocation(31, 48), assets.tile`Blocco teletrasporto portale`)
     }
 })
