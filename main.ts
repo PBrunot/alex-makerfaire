@@ -89,7 +89,7 @@ function initVariabili () {
     progressoCittà = 0
     p2Vita = 15
     p2QuestVittoria = false
-    VitaBossFinale = 20
+    VitaBossFinale = 25
     morteGuardie = 0
     arrTools = [
     img`
@@ -112,7 +112,25 @@ function initVariabili () {
         `,
     assets.image`Scudo fab`,
     assets.image`vuotoTrasparente`,
-    assets.image`sferadaprendere`
+    assets.image`sferadaprendere`,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `
     ]
     arrToolsNames = [
     "Spada",
@@ -149,7 +167,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         if (ghiaccio) {
             if (bacchetta) {
                 spariMultipli = []
-                for (let index2 = 0; index2 < 3; index2++) {
+                for (let index = 0; index < 3; index++) {
                     attaccoGhiaccio = sprites.createProjectileFromSprite(assets.image`Attacco di ghiaccio`, eroe, vx, vy)
                     spariMultipli.push(attaccoGhiaccio)
                     pause(330)
@@ -669,6 +687,18 @@ function openinventory () {
     controller.moveSprite(eroe, 0, 0)
     selectedIndex = 0
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Spawn boss finale`, function (sprite, location) {
+    scagnozzoBoss1 = sprites.create(assets.image`Miniboss in portale`, SpriteKind.GuardiaPortale)
+    scagnozzoBoss2 = sprites.create(assets.image`Miniboss in portale`, SpriteKind.GuardiaPortale)
+    scagnozzoBoss3 = sprites.create(assets.image`Miniboss in portale`, SpriteKind.GuardiaPortale)
+    tiles.placeOnRandomTile(scagnozzoBoss1, assets.tile`myTile40`)
+    tiles.placeOnRandomTile(scagnozzoBoss2, assets.tile`myTile40`)
+    tiles.placeOnRandomTile(scagnozzoBoss3, assets.tile`myTile40`)
+    tiles.setTileAt(location, assets.tile`myTile23`)
+    scagnozzoBoss1.follow(eroe, 40)
+    scagnozzoBoss2.follow(eroe, 40)
+    scagnozzoBoss3.follow(eroe, 40)
+})
 // Narratore
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore4, function (sprite, otherSprite) {
     game.showLongText("Non sei ancora pronto per affrontare l'Invasione", DialogLayout.Bottom)
@@ -704,17 +734,10 @@ sprites.onOverlap(SpriteKind.NemicoPotenziato, SpriteKind.Blocco, function (spri
     game.setGameOverMessage(false, "Il cristallo è stato rubato!")
     game.gameOver(false)
 })
-// Combattimento
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Blocco, function (sprite7, otherSprite5) {
-    fuoco = true
-    tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
-    arrTools[2] = assets.image`Attacco di fuoco`
-    arrToolsNames[2] = "Cristallo fuoco"
-})
 sprites.onDestroyed(SpriteKind.GuardiaPortale, function (sprite37) {
     morteGuardie += 1
     if (zonaCorrente == 7 && morteGuardie == 9) {
-        tiles.setTileAt(tiles.getTileLocation(19, 18), assets.tile`Boss finale blocco`)
+        tiles.setTileAt(tiles.getTileLocation(19, 20), assets.tile`Boss finale blocco`)
         tiles.setTileAt(tiles.getTileLocation(19, 23), assets.tile`myTile23`)
         tiles.setWallAt(tiles.getTileLocation(19, 23), false)
     }
@@ -804,26 +827,6 @@ info.onLifeZero(function () {
         game.gameOver(false)
     }
 })
-// Inventario
-spriteutils.createRenderable(100, function (screen2) {
-    let index: number;
-if (inventarioAperto) {
-        screen2.fillRect(10, 10, 200, 100, 4)
-        screen2.drawRect(10, 10, 200, 100, 14)
-        screen2.print("INVENTARIO", 14, 14, 15)
-screen2.print(arrToolsNames[selectedIndex], 80, 14, 0)
-screen2.fillRect(14, 24, 162, 1, 15)
-        toolTop = 28
-        index = 0
-        while (index <= arrTools.length - 1) {
-            spriteutils.drawTransparentImage(arrTools[index], screen2, 14 + index * 20, toolTop)
-index += 1
-        }
-        spriteutils.drawTransparentImage(assets.image`
-                trasparente
-            `, screen2, 14 + selectedIndex * 20 - 2, toolTop - 2)
-    }
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.GuardiaPortale, function (sprite, otherSprite) {
     if (sprite == attaccoGhiaccio) {
         if (randint(1, 6) >= 3) {
@@ -885,6 +888,13 @@ scene.onHitWall(SpriteKind.NemicoPotenziato, function (sprite10, location3) {
     tiles.setWallAt(location3, false)
     tiles.setTileAt(location3, assets.tile`muro distrutto`)
 })
+// Combattimento
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristallofuoco, function (sprite7, otherSprite5) {
+    fuoco = true
+    tiles.setTileAt(tiles.getTileLocation(21, 3), sprites.castle.tileGrass1)
+    arrTools[2] = assets.image`Attacco di fuoco`
+    arrToolsNames[2] = "Cristallo fuoco"
+})
 // Villaggio
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Narratore2, function (sprite11, otherSprite7) {
     sferaDaPrendere = sprites.create(assets.image`sferadaprendere`, SpriteKind.Cristallofuoco)
@@ -923,11 +933,13 @@ function cambiaZona (zona: number) {
         }
     } else if (zona == 1) {
         if (z1Ripulita) {
+            music.play(music.createSong(hex`00780004080200`), music.PlaybackMode.LoopingInBackground)
             tiles.setCurrentTilemap(tilemap`Villaggio`)
             contadino1 = sprites.create(assets.image`Contadino`, SpriteKind.Contadino)
             eroe.setPosition(5 * 16, 8 * 16)
         } else {
             tiles.setCurrentTilemap(tilemap`Villaggio distrutto`)
+            music.play(music.createSong(assets.song`VIllaggio attacco mostri`), music.PlaybackMode.InBackground)
             tiles.placeOnRandomTile(eroe, assets.tile`Porta casa`)
             eroe.y += 16
             sferaFuoco = sprites.create(assets.image`sferadaprendere`, SpriteKind.Blocco)
@@ -947,6 +959,7 @@ function cambiaZona (zona: number) {
         }
     } else if (zona == 3) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
+        music.play(music.createSong(assets.song`invasione mostri`), music.PlaybackMode.InBackground)
         if (ghiaccio) {
             tiles.setWallAt(tiles.getTileLocation(32, 38), false)
             tiles.setWallAt(tiles.getTileLocation(33, 38), false)
@@ -960,11 +973,12 @@ function cambiaZona (zona: number) {
     } else if (zona == 4) {
         tiles.setCurrentTilemap(tilemap`Tilemap morte`)
         tiles.placeOnRandomTile(eroe, assets.tile`myTile35`)
+        music.play(music.createSong(hex`0078000408020304001c00100500640000041e000004000000000000000000000000000a040004360000000400012408000c00012a0c001000012518001c0001271c002000012228002c0001242c00300001273400380001203c004000012507001c00020a006400f4016400000400000000000000000000000000000000031f0000000400012710001400011d20002400012724002800011e38003c00021e2909010e02026400000403780000040a000301000000640001c80000040100000000640001640000040100000000fa0004af00000401c80000040a00019600000414000501006400140005010000002c0104dc00000401fa0000040a0001c8000004140005d0076400140005d0070000c800029001f40105c201f4010a0005900114001400039001000005c201f4010500058403050032000584030000fa00049001000005c201f4010500058403c80032000584030500640005840300009001049001000005c201f4010500058403c80064000584030500c8000584030000f40105ac0d000404a00f00000a0004ac0d2003010004a00f0000280004ac0d9001010004a00f0000280002d00700040408070f0064000408070000c80003c800c8000e7d00c80019000e64000f0032000e78000000fa00032c01c8000ee100c80019000ec8000f0032000edc000000fa0003f401c8000ea901c80019000e90010f0032000ea4010000fa0001c8000004014b000000c800012c01000401c8000000c8000190010004012c010000c80002c800000404c8000f0064000496000000c80002c2010004045e010f006400042c010000640002c409000404c4096400960004f6090000f40102b80b000404b80b64002c0104f40b0000f401022003000004200300040a000420030000ea01029001000004900100040a000490010000900102d007000410d0076400960010d0070000c800310004000500011110001100020f1618001900011320002100011628002900011530003100010f3400350001133c003d000111`), music.PlaybackMode.InBackground)
     } else if (zona == 5) {
         tiles.setCurrentTilemap(tilemap`Castello`)
-        music.play(music.createSong(assets.song`Musica castello`), music.PlaybackMode.LoopingInBackground)
         tiles.placeOnRandomTile(eroe, assets.tile`Tel da castello a mappa generale`)
         eroe.y += -32
+        music.play(music.createSong(assets.song`Musica castello`), music.PlaybackMode.InBackground)
     } else if (zona == 6) {
         if (zonaCorrente == 0) {
             testGioco()
@@ -978,6 +992,7 @@ function cambiaZona (zona: number) {
     } else if (zona == 7) {
         tiles.setCurrentTilemap(tilemap`Bossfight portale`)
         tiles.placeOnRandomTile(eroe, assets.tile`myTile35`)
+        music.play(music.createSong(hex`0078000408020304001c00100500640000041e000004000000000000000000000000000a040004360000000400012408000c00012a0c001000012518001c0001271c002000012228002c0001242c00300001273400380001203c004000012507001c00020a006400f4016400000400000000000000000000000000000000031f0000000400012710001400011d20002400012724002800011e38003c00021e2909010e02026400000403780000040a000301000000640001c80000040100000000640001640000040100000000fa0004af00000401c80000040a00019600000414000501006400140005010000002c0104dc00000401fa0000040a0001c8000004140005d0076400140005d0070000c800029001f40105c201f4010a0005900114001400039001000005c201f4010500058403050032000584030000fa00049001000005c201f4010500058403c80032000584030500640005840300009001049001000005c201f4010500058403c80064000584030500c8000584030000f40105ac0d000404a00f00000a0004ac0d2003010004a00f0000280004ac0d9001010004a00f0000280002d00700040408070f0064000408070000c80003c800c8000e7d00c80019000e64000f0032000e78000000fa00032c01c8000ee100c80019000ec8000f0032000edc000000fa0003f401c8000ea901c80019000e90010f0032000ea4010000fa0001c8000004014b000000c800012c01000401c8000000c8000190010004012c010000c80002c800000404c8000f0064000496000000c80002c2010004045e010f006400042c010000640002c409000404c4096400960004f6090000f40102b80b000404b80b64002c0104f40b0000f401022003000004200300040a000420030000ea01029001000004900100040a000490010000900102d007000410d0076400960010d0070000c800310004000500011110001100020f1618001900011320002100011628002900011530003100010f3400350001133c003d000111`), music.PlaybackMode.InBackground)
     } else if (zona == 8) {
         tiles.setCurrentTilemap(tilemap`Mappa generale`)
         tiles.placeOnRandomTile(eroe, sprites.dungeon.collectibleInsignia)
@@ -1064,6 +1079,7 @@ function destroyAllSprites () {
     sprites.destroy(narratore_2)
     sprites.destroyAllSpritesOfKind(SpriteKind.GuardiaPortale)
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    sprites.destroyAllSpritesOfKind(SpriteKind.BossFinale)
     arrNemici = []
     sprites.destroy(narratore_3)
     sprites.destroy(narratore_4)
@@ -1125,6 +1141,9 @@ let narratore_4: Sprite = null
 let zonaCorrente = 0
 let bossFinaleAttivo = false
 let bossFinale: Sprite = null
+let scagnozzoBoss3: Sprite = null
+let scagnozzoBoss2: Sprite = null
+let scagnozzoBoss1: Sprite = null
 let p2QuestFallita = false
 let inventarioAperto = false
 let attaccoBossFinale: Sprite = null
@@ -1168,7 +1187,7 @@ initVariabili()
 scene.setBackgroundImage(assets.image`Copertina`)
 music.play(music.createSong(assets.song`invasion musica brutta`), music.PlaybackMode.UntilDone)
 scene.setBackgroundImage(assets.image`Inizio`)
-game.showLongText("... Cos'è questa puzza di fumo?", DialogLayout.Bottom)
+game.splash("... Cos'è questa puzza di fumo?")
 info.setLife(10)
 introComplete = true
 cambiaZona(0)
@@ -1181,7 +1200,6 @@ game.onUpdateInterval(5000, function () {
 })
 // Game over
 game.onUpdateInterval(4000, function () {
-    console.log("Game update")
     if (zonaCorrente == 1 && zone1SpawnCnt < 6) {
         arrNemici.unshift(sprites.create(assets.image`Nemico base`, SpriteKind.Enemy))
         if (randint(0, 10) < 6) {
@@ -1212,8 +1230,13 @@ game.onUpdateInterval(4000, function () {
         tiles.placeOnRandomTile(arrNemici[0], assets.tile`Spawner nemici normali`)
         zona9SpawnCnt += 1
     }
+})
+game.onUpdateInterval(100, function () {
     if (zonaCorrente == 3 && cittàAperta) {
         tiles.setWallAt(tiles.getTileLocation(38, 32), false)
         tiles.setWallAt(tiles.getTileLocation(38, 33), false)
+    }
+    if (bacchetta) {
+        tiles.setTileAt(tiles.getTileLocation(31, 48), assets.tile`Blocco teletrasporto portale`)
     }
 })
