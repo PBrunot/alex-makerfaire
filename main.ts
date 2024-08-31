@@ -64,7 +64,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         direzioneColpo = 3
     }
 })
-function spriteCittà() {
+function spriteCittà () {
     p1 = sprites.create(assets.image`scimmia`, SpriteKind.Personaggio1)
     tiles.placeOnRandomTile(p1, assets.tile`spawnPersonaggio`)
     p2 = sprites.create(assets.image`personaggio2`, SpriteKind.Personaggio2)
@@ -77,7 +77,7 @@ function spriteCittà() {
     reginaCittà = sprites.create(assets.image`regina`, SpriteKind.Regina)
     tiles.placeOnRandomTile(reginaCittà, assets.tile`spawnPersonaggio`)
 }
-function initVariabili() {
+function initVariabili () {
     selectedIndex = 0
     toolTop = 0
     p2Regina = false
@@ -93,11 +93,11 @@ function initVariabili() {
     VitaBossFinale = 25
     morteGuardie = 0
     arrTools = [
-        assets.image`imgSpada`,
-        assets.image`Scudo fab`,
-        assets.image`vuotoTrasparente`,
-        assets.image`sferadaprendere`,
-        img`
+    assets.image`imgSpada`,
+    assets.image`Scudo fab`,
+    assets.image`vuotoTrasparente`,
+    assets.image`sferadaprendere`,
+    img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -117,20 +117,20 @@ function initVariabili() {
         `
     ]
     arrToolsNames = [
-        "Spada",
-        "Scudo Fab",
-        "",
-        "",
-        ""
+    "Spada",
+    "Scudo Fab",
+    "",
+    "",
+    ""
     ]
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprite, location) {
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
     nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    Uscitacastello = sprites.create(assets.image`asddassad`, SpriteKind.Uscitacastello)
-    Uscitacastello.setPosition(20 * 16, 36 * 16)
-    nemicoPotenziato.follow(Uscitacastello, 15)
+    Uscitacastello2 = sprites.create(assets.image`asddassad`, SpriteKind.Uscitacastello)
+    Uscitacastello2.setPosition(20 * 16, 36 * 16)
+    nemicoPotenziato.follow(Uscitacastello2, 15)
     vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -204,8 +204,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             pause(100)
             sprites.destroy(projectile)
             animation.runImageAnimation(
-                eroe,
-                [img`
+            eroe,
+            [img`
                 ........................
                 ....ffffff..............
                 ..ffeeeef2f.............
@@ -230,7 +230,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ........................
                 .......fff..............
                 ....fffff2f.............
@@ -255,7 +255,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 .......ff...............
                 ....ffff2ff.............
                 ..ffeeeef2ff............
@@ -280,7 +280,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ....ffffff..............
                 ..ffeeeef2f.............
                 .ffeeeef222f............
@@ -305,7 +305,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ......ffff..............
                 ....fff22fff............
                 ...fff2222fff...........
@@ -331,16 +331,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 `],
-                100,
-                false
+            100,
+            false
             )
         } else if (direzioneColpo == 2) {
             projectile = sprites.createProjectileFromSprite(assets.image`myImage`, eroe, -100, 0)
             pause(150)
             sprites.destroy(projectile)
             animation.runImageAnimation(
-                eroe,
-                [img`
+            eroe,
+            [img`
                 ..............ffffff....
                 .............f2feeeeff..
                 ............f222feeeeff.
@@ -365,7 +365,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ........................
                 ..............fff.......
                 .............f2fffff....
@@ -390,7 +390,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ...............ff.......
                 .............ff2ffff....
                 ............ff2feeeeff..
@@ -415,7 +415,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ..............ffffff....
                 .............f2feeeeff..
                 ............f222feeeeff.
@@ -440,7 +440,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ......ffff..............
                 ....fff22fff............
                 ...fff2222fff...........
@@ -466,16 +466,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 `],
-                100,
-                false
+            100,
+            false
             )
         } else if (direzioneColpo == 4) {
             projectile = sprites.createProjectileFromSprite(assets.image`attacco inbasso`, eroe, 0, 100)
             pause(100)
             sprites.destroy(projectile)
             animation.runImageAnimation(
-                eroe,
-                [img`
+            eroe,
+            [img`
                 ........................
                 .....ffff...............
                 ...fff22fff.............
@@ -500,7 +500,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ........................
                 ......ffff..............
                 ....fff22fff............
@@ -525,7 +525,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ........................
                 ........................
                 .......ff...............
@@ -550,7 +550,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 .........c1c............
                 .........c1c............
                 .........c1c............
-                `, img`
+                `,img`
                 ......ffff..............
                 ....fff22fff............
                 ...fff2222fff...........
@@ -575,7 +575,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 ........................
-                `, img`
+                `,img`
                 ........................
                 .....ffff...............
                 ...fff22fff.............
@@ -601,8 +601,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 ........................
                 ........................
                 `],
-                100,
-                false
+            100,
+            false
             )
         }
         pause(500)
@@ -620,7 +620,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, ot
         sprites.destroy(sprite)
     }
 })
-function closeinventory() {
+function closeinventory () {
     inventarioAperto = false
 }
 sprites.onOverlap(SpriteKind.NemicoPotenziato, SpriteKind.Uscitacastello, function (sprite, otherSprite) {
@@ -670,7 +670,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Blocco, function (sprite13, other
     game.setGameOverMessage(false, "Il cristallo è stato rubato!")
     game.gameOver(false)
 })
-function openinventory() {
+function openinventory () {
     inventarioAperto = true
     controller.moveSprite(eroe, 0, 0)
     selectedIndex = 0
@@ -904,7 +904,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.BossFinale, function (sprite25, 
     pause(1000)
 })
 // Cambio Zona
-function cambiaZona(zona: number) {
+function cambiaZona (zona: number) {
     console.log("cambia Zona =" + zona + ",z1Ripulita=" + z1Ripulita)
     destroyAllSprites()
     eroe = sprites.create(assets.image`Eroe`, SpriteKind.Player)
@@ -1049,7 +1049,7 @@ scene.onOverlapTile(SpriteKind.Projectile, assets.tile`Ghiaccio_3`, function (sp
     }
     sprites.destroy(sprite3)
 })
-function testGioco() {
+function testGioco () {
     ghiaccio = true
     BANANNA = true
     cittàAperta = true
@@ -1087,7 +1087,7 @@ sprites.onDestroyed(SpriteKind.Enemy, function (sprite38) {
         }
     }
 })
-function destroyAllSprites() {
+function destroyAllSprites () {
     sprites.destroy(eroe)
     sprites.destroy(narratore_1)
     sprites.destroy(narratore_2)
@@ -1169,7 +1169,7 @@ let attaccoGhiaccio: Sprite = null
 let spariMultipli: Sprite[] = []
 let vy = 0
 let vx = 0
-let Uscitacastello: Sprite = null
+let Uscitacastello2: Sprite = null
 let nemicoPotenziato: Sprite = null
 let arrToolsNames: string[] = []
 let arrTools: Image[] = []
@@ -1199,16 +1199,17 @@ let attaccoFuoco: Sprite = null
 let introComplete = false
 initVariabili()
 MakeyMakey.setSimulatorKeymap(
-    MakeyMakey.PlayerNumber.ONE,
-    MakeyMakey.MakeyMakeyKey.UP,
-    MakeyMakey.MakeyMakeyKey.DOWN,
-    MakeyMakey.MakeyMakeyKey.LEFT,
-    MakeyMakey.MakeyMakeyKey.RIGHT,
-    MakeyMakey.MakeyMakeyKey.SPACE,
-    MakeyMakey.MakeyMakeyKey.LEFT_CLICK
+MakeyMakey.PlayerNumber.ONE,
+MakeyMakey.MakeyMakeyKey.UP,
+MakeyMakey.MakeyMakeyKey.DOWN,
+MakeyMakey.MakeyMakeyKey.LEFT,
+MakeyMakey.MakeyMakeyKey.RIGHT,
+MakeyMakey.MakeyMakeyKey.SPACE,
+MakeyMakey.MakeyMakeyKey.LEFT_CLICK
 )
 scene.setBackgroundImage(assets.image`Copertina`)
 music.play(music.createSong(assets.song`invasion musica brutta`), music.PlaybackMode.UntilDone)
+pauseUntil(() => controller.A.isPressed())
 scene.setBackgroundImage(assets.image`Inizio`)
 game.splash("... Cos'è questa puzza di fumo?")
 info.setLife(10)
