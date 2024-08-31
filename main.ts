@@ -127,9 +127,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Portaaperta`, function (sprit
     tiles.setTileAt(location, sprites.dungeon.floorLight2)
     nemicoPotenziato = sprites.create(assets.image`Nemico potenziato`, SpriteKind.NemicoPotenziato)
     nemicoPotenziato.setPosition(21 * 16, 4 * 16)
-    Uscitacastello = sprites.create(assets.image`asddassad`, SpriteKind.Blocco)
+    Uscitacastello = sprites.create(assets.image`asddassad`, SpriteKind.Uscitacastello)
     Uscitacastello.setPosition(20 * 16, 36 * 16)
-    nemicoPotenziato.follow(Uscitacastello, 20)
+    nemicoPotenziato.follow(Uscitacastello, 15)
     vitaNemicoPotenziato = 5
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
